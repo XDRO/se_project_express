@@ -8,6 +8,10 @@ mongoose
     console.log("Connected to DB");
   })
   .catch((e) => console.error(e));
+const routes = require("./routes");
+app.use(express.json());
+
+app.use(routes);
 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening on
