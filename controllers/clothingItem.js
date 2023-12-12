@@ -4,9 +4,9 @@ const createItem = (req, res) => {
   console.log(req);
   console.log(res.body);
 
-  const { name, weather, imageURL } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
-  ClothingItem.create({ name, weather, imageURL })
+  ClothingItem.create({ name, weather, imageUrl })
     .then((item) => {
       console.log(item);
       res.send({ data: item });
@@ -25,10 +25,10 @@ const getItems = (req, res) => {
 };
 
 const updateItem = (req, res) => {
-  const { itemId } = req.param;
-  const { imageURL } = req.body;
+  const { itemId } = req.params;
+  const { imageUrl } = req.body;
 
-  ClothingItem.findByIdAndUpdate(itemId, { $set: { imageURL } })
+  ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
@@ -38,8 +38,23 @@ const updateItem = (req, res) => {
     });
 };
 
+const deleteItem = (req, res) => {
+  const { itemId } = req.params;
+
+  console.log(itemId);
+  ClothingItem.findByIdAndDelete(itemId)
+    .orFail()
+    .then((item) => res.status(204).send({}))
+    .catch((e) => {
+      res
+        .status(500)
+        .send({ message: "delete items failed from deleteItem", e });
+    });
+};
+
 module.exports = {
   createItem,
   getItems,
   updateItem,
+  deleteItem,
 };
