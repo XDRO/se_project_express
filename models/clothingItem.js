@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-// let ObjectId = mongoose.Schema.ObjectId;
-
 const avatarImage = new mongoose.Schema({
   name: {
     type: String,
@@ -34,7 +32,6 @@ const clothingItem = new mongoose.Schema({
       message: "Link is not valid",
     },
     owner: {
-      // categoryId: ObjectId,
       type: mongoose.Schema.Types.ObjectId,
     },
   },
