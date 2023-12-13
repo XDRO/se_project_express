@@ -1,20 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const avatarImage = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  imageUrl: {
-    type: String,
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: "Link is not valid",
-    },
-  },
-});
-
 const clothingItem = new mongoose.Schema({
   name: {
     type: String,
