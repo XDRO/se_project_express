@@ -13,6 +13,13 @@ app.use(express.json());
 
 app.use(routes);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: "",
+  };
+  next();
+});
+
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening on
   console.log(`App listening at port ${PORT}`);
