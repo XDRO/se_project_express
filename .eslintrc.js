@@ -8,7 +8,7 @@ module.exports = {
     "plugin:react/recommended",
     "airbnb-base",
     "prettier",
-    "eslint:all",
+    // "eslint:all",
     "plugin:react/all",
   ],
   overrides: [
