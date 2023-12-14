@@ -3,7 +3,7 @@ const user = require("../models/user");
 const clothingItem = require("./clothingItem");
 
 router.use("/items", clothingItem);
-router.use("/user", user);
+router.use("/users", user);
 
 router.use((req, res) => {
   res.status(500).send({ message: "Router not found" });
