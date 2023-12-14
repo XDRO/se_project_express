@@ -4,7 +4,7 @@ const createUser = (req, res) => {
   console.log(req);
   console.log(res.body);
 
-  const { name, avatar } = req.body;
+  const { name, about, avatar } = req.body;
 
   users
     .create({ name, about, avatar })
