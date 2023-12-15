@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { PORT = 3001 } = process.env;
 const app = express();
+const CustomErr = require("./utils/error");
+const globalErrorHandler = require("./controllers/errorController");
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
@@ -22,8 +24,17 @@ app.use((req, res, next) => {
 
 app.use(routes);
 
+app.all("*", (req, res, next) => {
+  const err = new CustomErr(
+    `Can't find ${req.originalUrl} on this server!`,
+    404,
+  );
+  next(err);
+});
+
+app.use(globalErrorHandler);
+
 app.listen(PORT, () => {
-  // if everything works fine, the console will show which port the application is listening on
   console.log(`App listening at port ${PORT}`);
 });
 

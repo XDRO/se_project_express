@@ -62,3 +62,7 @@ module.exports = {
   updateItem,
   deleteItem,
 };
+
+// module.exports.createItem = (req, res) => {
+//   console.log(req.user._id);
+// };
