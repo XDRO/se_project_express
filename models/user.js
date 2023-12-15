@@ -4,10 +4,11 @@ const validator = require("validator");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
+    required: true,
   },
   avatar: {
     type: String,
+    required: true,
     validate: {
       validator: (v) => validator.isURL(v),
       message: "Link is not valid",

@@ -8,12 +8,14 @@ mongoose
     console.log("Connected to DB");
   })
   .catch((e) => console.error(e));
+
 const routes = require("./routes");
+
 app.use(express.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "",
+    _id: "657c5502ad237567deca8def",
   };
   next();
 });
