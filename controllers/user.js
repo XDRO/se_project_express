@@ -17,12 +17,10 @@ const createUser = (req, res, next) => {
     });
 };
 
-const getUser = (req, res, next) => {
-  const { userId } = req.params;
-  const { avatar } = req.body;
-
+const getUsers = (req, res, next) => {
+  const { ObjectId } = req.params;
   user
-    .findById(userId, { $set: { avatar } })
+    .find({ ObjectId })
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
@@ -30,7 +28,7 @@ const getUser = (req, res, next) => {
     });
 };
 
-const getUsers = (req, res, next) => {
+const getUserById = (req, res, next) => {
   user
     .find({})
     .then((items) => res.status(200).send(items))
@@ -39,4 +37,8 @@ const getUsers = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getUser, getUsers };
+module.exports = { createUser, getUserById, getUsers };
+
+// If later on you want to find a user then update the avatar you might want these:
+// const { avatar } = req.body;
+// { $set: { avatar } }
