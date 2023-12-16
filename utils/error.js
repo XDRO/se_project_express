@@ -13,3 +13,5 @@ class CustomErr extends Error {
 module.exports = CustomErr;
 
 // const error = new CustomErr('some error message', 404)
+
+// add if and else statments to handle different errors inside of controllers
