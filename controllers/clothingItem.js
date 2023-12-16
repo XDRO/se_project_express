@@ -29,10 +29,17 @@ const updateItem = (req, res, next) => {
   const { imageUrl } = req.body;
 
   ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
-    .orFail()
+    .orFail(new Error("User not found"))
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
-      next(e);
+      if (
+        e.name === "CastError" ||
+        (e.name === "Error" && e.message === "User not found")
+      ) {
+        return res.status(200).send({ data: null });
+      } else {
+        next(e);
+      }
     });
 };
 
