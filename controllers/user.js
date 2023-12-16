@@ -32,18 +32,10 @@ const getUserById = (req, res, next) => {
   const { userId } = req.params;
   user
     .findById(userId)
-    .then((item) => {
-      if (!item) {
-        const error = new Error("User not found");
-        error.name = "CastError";
-        throw error;
-      }
-      return item;
-    })
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
       if (e.name === "CastError") {
-        return res.status(404).send({ message: "User not found" });
+        return res.status(200).send({ data: null });
       } else {
         next(e);
       }
