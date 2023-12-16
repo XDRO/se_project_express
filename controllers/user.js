@@ -29,9 +29,10 @@ const getUsers = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
+  const { userId } = req.params;
   user
-    .find({})
-    .then((items) => res.status(200).send(items))
+    .findById(userId)
+    .then((item) => res.status(200).send(item))
     .catch((e) => {
       next(e);
     });
@@ -42,3 +43,4 @@ module.exports = { createUser, getUserById, getUsers };
 // If later on you want to find a user then update the avatar you might want these:
 // const { avatar } = req.body;
 // { $set: { avatar } }
+//  _id: ObjectId("657c5502ad237567deca8def")
