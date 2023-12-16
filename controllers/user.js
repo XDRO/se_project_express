@@ -1,6 +1,6 @@
 const user = require("../models/user");
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   console.log(req);
   console.log(res.body);
 
@@ -18,7 +18,7 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { userId } = req.params;
   const { avatar } = req.body;
 
@@ -32,7 +32,7 @@ const getUser = (req, res) => {
     });
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   user
     .find({})
     .then((items) => res.status(200).send(items))
