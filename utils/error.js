@@ -20,6 +20,7 @@
 
 // I feel like I've already done this with my global error handler
 // this might just be repeating myself: below
+
 // const errorHandler = (err, req, res, next) => {
 //   if (err.name === "ValidationError") {
 //     return res.status(400).send({
