@@ -13,8 +13,7 @@ const createUser = (req, res, next) => {
       res.send({ data: item });
     })
     .catch((e) => {
-      // console.error(e);
-      // res.status(500).send({ message: "Error from createUser", e });
+      next(e);
     });
 };
 
@@ -27,8 +26,7 @@ const getUser = (req, res, next) => {
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
-      // console.error(e);
-      // res.status(500).send({ message: "Get user failed from getUser", e });
+      next(e);
     });
 };
 
@@ -37,8 +35,7 @@ const getUsers = (req, res, next) => {
     .find({})
     .then((items) => res.status(200).send(items))
     .catch((e) => {
-      // console.error(e);
-      // res.status(500).send({ message: "Get Users failed from getUsers", e });
+      next(e);
     });
 };
 

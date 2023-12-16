@@ -24,13 +24,13 @@ app.use((req, res, next) => {
 
 app.use(routes);
 
-app.all("*", (req, res, next) => {
-  const err = new CustomErr(
-    `Can't find ${req.originalUrl} on this server!`,
-    404,
-  );
-  next(err);
-});
+// app.all("*", (req, res, next) => {
+//   const err = new CustomErr(
+//     `Can't find ${req.originalUrl} on this server!`,
+//     404,
+//   );
+//   next(err);
+// });
 
 app.use(globalErrorHandler);
 

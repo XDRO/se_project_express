@@ -12,8 +12,7 @@ const createItem = (req, res, next) => {
       res.send({ data: item });
     })
     .catch((e) => {
-      // console.error(e);
-      // res.status(500).send({ message: "Error from createItem", e });
+      next(e);
     });
 };
 
@@ -21,8 +20,7 @@ const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((e) => {
-      // console.error(e);
-      // res.status(500).send({ message: "Get items failed from getItems", e });
+      next(e);
     });
 };
 
@@ -34,10 +32,7 @@ const updateItem = (req, res, next) => {
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
-      // console.error(e);
-      // res
-      //   .status(500)
-      //   .send({ message: "update items failed from updateItem", e });
+      next(e);
     });
 };
 
@@ -49,10 +44,7 @@ const deleteItem = (req, res, next) => {
     .orFail()
     .then((item) => res.status(204).send({}))
     .catch((e) => {
-      // console.error(e);
-      // res
-      //   .status(500)
-      //   .send({ message: "delete items failed from deleteItem", e });
+      next(e);
     });
 };
 
