@@ -43,4 +43,3 @@ module.exports = { createUser, getUserById, getUsers };
 // If later on you want to find a user then update the avatar you might want these:
 // const { avatar } = req.body;
 // { $set: { avatar } }
-//  _id: ObjectId("657c5502ad237567deca8def")
