@@ -22,8 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(routes);
-
 // app.all("*", (req, res, next) => {
 //   const err = new CustomErr(
 //     `Can't find ${req.originalUrl} on this server!`,
@@ -32,6 +30,8 @@ app.use(routes);
 //   next(err);
 // });
 
+app.use(routes);
+
 app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
@@ -39,3 +39,5 @@ app.listen(PORT, () => {
 });
 
 // run in gitbash to start database "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"
+
+// removed this Id from postman user_id const variable 61eade4c6d5acf558c42d9b8
