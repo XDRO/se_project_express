@@ -1,4 +1,9 @@
 const ClothingItem = require("../models/clothingItem");
+const {
+  HTTP_BAD_REQUEST,
+  HTTP_NOT_FOUND,
+  HTTP_INTERNAL_SERVER_ERROR,
+} = require("../utils/error");
 
 const createItem = (req, res, next) => {
   console.log(req);
@@ -36,7 +41,7 @@ const updateItem = (req, res, next) => {
         e.name === "CastError" ||
         (e.name === "Error" && e.message === "User not found")
       ) {
-        return res.status(200).send({ data: null });
+        return res.status(HTTP_BAD_REQUEST).send({ data: null });
       } else {
         next(e);
       }

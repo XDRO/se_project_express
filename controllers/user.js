@@ -1,5 +1,9 @@
 const user = require("../models/user");
-
+const {
+  HTTP_BAD_REQUEST,
+  HTTP_NOT_FOUND,
+  HTTP_INTERNAL_SERVER_ERROR,
+} = require("../utils/error");
 const createUser = (req, res, next) => {
   console.log(req);
   console.log(res.body);
@@ -15,7 +19,7 @@ const createUser = (req, res, next) => {
     .catch((e) => {
       if (e.name === "ValidationError") {
         const validationError = new Error(e.message);
-        validationError.statusCode = 400;
+        validationError.statusCode = HTTP_BAD_REQUEST;
         next(validationError);
       }
       next(e);
@@ -44,7 +48,7 @@ const getUserById = (req, res, next) => {
         e.name === "CastError" ||
         (e.name === "Error" && e.message === "User not found")
       ) {
-        return res.status(200).send({ data: null });
+        return res.status(HTTP_BAD_REQUEST).send({ data: null });
       } else {
         next(e);
       }
