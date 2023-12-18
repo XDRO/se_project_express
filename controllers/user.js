@@ -13,6 +13,11 @@ const createUser = (req, res, next) => {
       res.send({ data: item });
     })
     .catch((e) => {
+      if (e.name === "ValidationError") {
+        const validationError = new Error(e.message);
+        validationError.statusCode = 400;
+        next(validationError);
+      }
       next(e);
     });
 };
