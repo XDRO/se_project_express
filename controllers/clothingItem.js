@@ -7,6 +7,7 @@ const {
 const { default: mongoose } = require("mongoose");
 
 module.exports.createItem = (req, res, next) => {
+  console.log(req.user._id);
   console.log(req);
   console.log(res.body);
 
@@ -57,7 +58,11 @@ module.exports.deleteItem = (req, res, next) => {
 
   console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
-    .orFail()
+    .orFail(() => {
+      const nonExistentErrorId = new Error("Item ID not found");
+      nonExistentErrorId.statusCode = HTTP_NOT_FOUND;
+      throw nonExistentErrorId;
+    })
     .then((item) => res.status(204).send({}))
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
@@ -74,14 +79,57 @@ module.exports.deleteItem = (req, res, next) => {
     });
 };
 
-// const likeItem = (req, res, next) => {};
+module.exports.likeItem = (req, res, next) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((e) => {
+      if (e instanceof mongoose.CastError) {
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
+      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+        const notFoundError = new Error(e.message);
+        notFoundError.statusCode = HTTP_NOT_FOUND;
+        next(notFoundError);
+      } else {
+        next(e);
+      }
+    });
+};
 
+module.exports.dislikeItem = (req, res, next) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((e) => {
+      if (e instanceof mongoose.CastError) {
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
+      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+        const notFoundError = new Error(e.message);
+        notFoundError.statusCode = HTTP_NOT_FOUND;
+        next(notFoundError);
+      } else {
+        next(e);
+      }
+    });
+};
 // module.exports.createItem = (req, res) => {
 //   console.log(req.user._id);
 // };
 
 // module.exports = {
-//   // createItem,
+//   createItem,
 //   getItems,
 //   updateItem,
 //   deleteItem,
