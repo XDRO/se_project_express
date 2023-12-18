@@ -1,9 +1,5 @@
 const ClothingItem = require("../models/clothingItem");
-const {
-  HTTP_BAD_REQUEST,
-  HTTP_NOT_FOUND,
-  HTTP_INTERNAL_SERVER_ERROR,
-} = require("../utils/error");
+const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
 
 const createItem = (req, res, next) => {
   console.log(req);
@@ -17,6 +13,11 @@ const createItem = (req, res, next) => {
       res.send({ data: item });
     })
     .catch((e) => {
+      if (e.name === "ValidationError") {
+        const validationError = new Error(e.message);
+        validationError.statusCode = HTTP_BAD_REQUEST;
+        next(validationError);
+      }
       next(e);
     });
 };
