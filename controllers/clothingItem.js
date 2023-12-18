@@ -59,9 +59,9 @@ module.exports.deleteItem = (req, res, next) => {
   console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail(() => {
-      const nonExistentErrorId = new Error("Item ID not found");
-      nonExistentErrorId.statusCode = HTTP_NOT_FOUND;
-      throw nonExistentErrorId;
+      const nonExistentIdError = new Error("Item ID not found");
+      nonExistentIdError.statusCode = HTTP_NOT_FOUND;
+      throw nonExistentIdError;
     })
     .then((item) => res.status(204).send({}))
     .catch((e) => {

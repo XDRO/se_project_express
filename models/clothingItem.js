@@ -20,12 +20,18 @@ const clothingItem = new mongoose.Schema({
       validator: (v) => validator.isURL(v),
       message: "Link is not valid",
     },
-    owner: {
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: user,
+    required: true,
+  },
+  likes: [
+    {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
     },
-    likes: {},
-  },
+  ],
 });
 
 module.exports = mongoose.model("clothingItems", clothingItem);
