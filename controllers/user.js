@@ -38,7 +38,7 @@ const getUserById = (req, res, next) => {
   const { userId } = req.params;
   user
     .findById(userId)
-    .orFail(new Error("User not found"))
+    .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
@@ -60,12 +60,3 @@ module.exports = { createUser, getUserById, getUsers };
 // If later on you want to find a user then update the avatar you might want these:
 // const { avatar } = req.body;
 // { $set: { avatar } }
-
-// if (
-//   e.name === "CastError" ||
-//   (e.name === "Error" && e.message === "User not found")
-// ) {
-//   return res.status(HTTP_BAD_REQUEST).send({ data: null });
-// } else {
-//   next(e);
-// }
