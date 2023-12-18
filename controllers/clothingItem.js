@@ -1,5 +1,10 @@
 const ClothingItem = require("../models/clothingItem");
-const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
+const {
+  HTTP_BAD_REQUEST,
+  HTTP_NOT_FOUND,
+  HTTP_OK_REQUEST,
+} = require("../utils/error");
+const mongoose = require("mongoose");
 
 const createItem = (req, res, next) => {
   console.log(req);
@@ -39,13 +44,14 @@ const updateItem = (req, res, next) => {
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
       if (
-        e.name === "CastError" ||
+        e instanceof mongoose.CastError ||
         (e.name === "Error" && e.message === "User not found")
       ) {
-        return res.status(HTTP_BAD_REQUEST).send({ data: null });
-      } else {
-        next(e);
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
       }
+      next(e);
     });
 };
 
@@ -57,9 +63,21 @@ const deleteItem = (req, res, next) => {
     .orFail()
     .then((item) => res.status(204).send({}))
     .catch((e) => {
-      next(e);
+      if (e instanceof mongoose.CastError) {
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
+      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+        const notFoundError = new Error(e.message);
+        notFoundError.statusCode = HTTP_OK_REQUEST;
+        next(notFoundError);
+      } else {
+        next(e);
+      }
     });
 };
+
+const likeItem = (req, res, next) => {};
 
 module.exports = {
   createItem,
@@ -71,3 +89,9 @@ module.exports = {
 // module.exports.createItem = (req, res) => {
 //   console.log(req.user._id);
 // };
+
+// if (e instanceof mongoose.CastError) {
+//   const castError = new Error(e.message);
+//   castError.statusCode = HTTP_BAD_REQUEST;
+//   next(castError);
+// }

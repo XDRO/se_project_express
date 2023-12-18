@@ -1,10 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const user = require("../models/user");
-const {
-  HTTP_BAD_REQUEST,
-  HTTP_NOT_FOUND,
-  HTTP_INTERNAL_SERVER_ERROR,
-} = require("../utils/error");
+const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
 const createUser = (req, res, next) => {
   console.log(req);
   console.log(res.body);
