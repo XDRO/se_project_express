@@ -80,6 +80,8 @@ module.exports.deleteItem = (req, res, next) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
+  console.log(req.params.itemId);
+  console.log(req.user._id);
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
