@@ -30,5 +30,3 @@ app.listen(PORT, () => {
 });
 
 // run in gitbash to start database "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"
-
-// removed this Id from postman user_id const variable 61eade4c6d5acf558c42d9b8
