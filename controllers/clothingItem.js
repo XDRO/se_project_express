@@ -9,15 +9,10 @@ const {
 } = require("../utils/error");
 
 module.exports.createItem = (req, res, next) => {
-  // console.log(req.user._id);
-  // console.log(req);
-  // console.log(res.body);
-
   const { name, weather, imageUrl } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
-      // console.log(item);
       res.send({ data: item });
     })
     .catch((e) => {
