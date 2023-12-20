@@ -1,21 +1,23 @@
+const { default: mongoose } = require("mongoose");
+
 const ClothingItem = require("../models/clothingItem");
+
 const {
   HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
   HTTP_OK_REQUEST,
 } = require("../utils/error");
-const { default: mongoose } = require("mongoose");
 
 module.exports.createItem = (req, res, next) => {
-  console.log(req.user._id);
-  console.log(req);
-  console.log(res.body);
+  // console.log(req.user._id);
+  // console.log(req);
+  // console.log(res.body);
 
   const { name, weather, imageUrl } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
-      console.log(item);
+      // console.log(item);
       res.send({ data: item });
     })
     .catch((e) => {
@@ -56,7 +58,7 @@ module.exports.getItems = (req, res, next) => {
 module.exports.deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
-  console.log(itemId);
+  // console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     // const nonExistentIdError = new Error("Item ID not found");
@@ -80,8 +82,8 @@ module.exports.deleteItem = (req, res, next) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
-  console.log(req.params.itemId);
-  console.log(req.user._id);
+  // console.log(req.params.itemId);
+  // console.log(req.user._id);
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },

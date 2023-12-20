@@ -5,11 +5,11 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:react/recommended",
+    // "plugin:react/recommended",
     "airbnb-base",
     "prettier",
     // "eslint:all",
-    "plugin:react/all",
+    // "plugin:react/all",
   ],
   overrides: [
     {
@@ -28,5 +28,5 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  // rules: { "no-underscore-dangle": "off" },
+  rules: { "no-underscore-dangle": "off" },
 };

@@ -3,13 +3,13 @@ const user = require("../models/user");
 const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
 
 const createUser = (req, res, next) => {
-  console.log(req);
-  console.log(res.body);
+  // console.log(req);
+  // console.log(res.body);
   const { name, avatar } = req.body;
   user
     .create({ name, avatar })
     .then((item) => {
-      console.log(item);
+      // console.log(item);
       res.send({ data: item });
     })
     .catch((e) => {
