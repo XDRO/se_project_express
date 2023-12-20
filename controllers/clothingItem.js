@@ -63,7 +63,7 @@ module.exports.deleteItem = (req, res, next) => {
     // nonExistentIdError.statusCode = HTTP_NOT_FOUND;
     // throw nonExistentIdError;
     // })
-    .then((item) => res.status(HTTP_OK_REQUEST).send({ itemId })) // response should not be empty
+    .then((item) => res.status(HTTP_OK_REQUEST).send({ item })) // response should not be empty
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
         const castError = new Error(e.message);
