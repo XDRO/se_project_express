@@ -23,10 +23,8 @@ const createUser = (req, res, next) => {
 };
 
 const getUsers = (req, res, next) => {
-  const { ObjectId } = req.params;
   user
-    .find({ ObjectId })
-    .orFail()
+    .find({})
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
       next(e);
