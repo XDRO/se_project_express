@@ -53,13 +53,8 @@ module.exports.getItems = (req, res, next) => {
 module.exports.deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
-  // console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    // const nonExistentIdError = new Error("Item ID not found");
-    // nonExistentIdError.statusCode = HTTP_NOT_FOUND;
-    // throw nonExistentIdError;
-    // })
     .then((item) => res.status(HTTP_OK_REQUEST).send({ item })) // response should not be empty
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
@@ -77,8 +72,6 @@ module.exports.deleteItem = (req, res, next) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
-  // console.log(req.params.itemId);
-  // console.log(req.user._id);
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
