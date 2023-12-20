@@ -13,7 +13,7 @@ module.exports.createItem = (req, res, next) => {
 
   const { name, weather, imageUrl } = req.body;
 
-  ClothingItem.create({ name, weather, imageUrl })
+  ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
       console.log(item);
       res.send({ data: item });
@@ -71,7 +71,7 @@ module.exports.deleteItem = (req, res, next) => {
         next(castError);
       } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
         const notFoundError = new Error(e.message);
-        notFoundError.statusCode = HTTP_OK_REQUEST;
+        notFoundError.statusCode = HTTP_NOT_FOUND;
         next(notFoundError);
       } else {
         next(e);
