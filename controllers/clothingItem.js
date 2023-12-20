@@ -58,12 +58,12 @@ module.exports.deleteItem = (req, res, next) => {
 
   console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
-    .orFail(() => {
-      const nonExistentIdError = new Error("Item ID not found");
-      nonExistentIdError.statusCode = HTTP_NOT_FOUND;
-      throw nonExistentIdError;
-    })
-    .then((item) => res.status(204).send({}))
+    .orFail()
+    // const nonExistentIdError = new Error("Item ID not found");
+    // nonExistentIdError.statusCode = HTTP_NOT_FOUND;
+    // throw nonExistentIdError;
+    // })
+    .then((item) => res.status(HTTP_OK_REQUEST).send({ itemId })) // response should not be empty
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
         const castError = new Error(e.message);
