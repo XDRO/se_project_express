@@ -8,9 +8,7 @@ const globalErrorHandler = require("./controllers/errorController");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => {
-    // console.log("app connected to DB");
-  })
+  .then(() => {})
   .catch();
 
 const routes = require("./routes");
@@ -28,8 +26,6 @@ app.use(routes);
 
 app.use(globalErrorHandler);
 
-app.listen(PORT, () => {
-  // console.log(`App listening at port ${PORT}`);
-});
+app.listen(PORT, () => {});
 
 // run in gitbash to start database "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"
