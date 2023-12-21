@@ -33,29 +33,12 @@ module.exports.getItems = (req, res, next) => {
     });
 };
 
-// module.exports.updateItem = (req, res, next) => {
-//   const { itemId } = req.params;
-//   const { imageUrl } = req.body;
-
-//   ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
-//     .orFail()
-//     .then((item) => res.status(200).send({ data: item }))
-//     .catch((e) => {
-//       if (e instanceof mongoose.CastError) {
-//         const castError = new Error(e.message);
-//         castError.statusCode = HTTP_BAD_REQUEST;
-//         next(castError);
-//       }
-//       next(e);
-//     });
-// };
-
 module.exports.deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(HTTP_OK_REQUEST).send({ item })) // response should not be empty
+    .then((item) => res.status(HTTP_OK_REQUEST).send({ item }))
     .catch((e) => {
       if (e instanceof mongoose.CastError) {
         const castError = new Error(e.message);
@@ -116,13 +99,3 @@ module.exports.dislikeItem = (req, res, next) => {
       }
     });
 };
-// module.exports.createItem = (req, res) => {
-//   console.log(req.user._id);
-// };
-
-// module.exports = {
-//   createItem,
-//   getItems,
-//   updateItem,
-//   deleteItem,
-// };

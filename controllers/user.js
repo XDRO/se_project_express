@@ -3,13 +3,10 @@ const user = require("../models/user");
 const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
 
 const createUser = (req, res, next) => {
-  // console.log(req);
-  // console.log(res.body);
   const { name, avatar } = req.body;
   user
     .create({ name, avatar })
     .then((item) => {
-      // console.log(item);
       res.send({ data: item });
     })
     .catch((e) => {
@@ -53,7 +50,3 @@ const getUserById = (req, res, next) => {
 };
 
 module.exports = { createUser, getUserById, getUsers };
-
-// If later on you want to find a user then update the avatar you might want these:
-// const { avatar } = req.body;
-// { $set: { avatar } }
