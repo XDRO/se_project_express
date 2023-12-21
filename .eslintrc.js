@@ -3,14 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    "eslint:recommended",
-    // "plugin:react/recommended",
-    "airbnb-base",
-    "prettier",
-    // "eslint:all",
-    // "plugin:react/all",
-  ],
+  extends: ["eslint:recommended", "airbnb-base", "prettier"],
   overrides: [
     {
       env: {
@@ -27,6 +20,5 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react"],
   rules: { "no-underscore-dangle": "off" },
 };

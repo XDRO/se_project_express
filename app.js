@@ -12,8 +12,6 @@ mongoose
     // console.log("app connected to DB");
   })
   .catch();
-// ^ line 16 removed from 14 .catch
-// (e) => console.error(e)
 
 const routes = require("./routes");
 
