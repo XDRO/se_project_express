@@ -33,9 +33,3 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("user", userSchema);
-
-// 1st task
-// add email and password fields both fields required
-// for validation use https://www.npmjs.com/package/validator
-// also create a file for validation and import it, create in utils
-// this is to check the email ONLY as of now
