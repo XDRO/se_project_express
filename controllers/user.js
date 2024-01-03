@@ -75,7 +75,7 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch((e) => {
-      // hanlde error properly
+      // handle error properly
       res.status(401).send({ message: e.message });
     });
 };

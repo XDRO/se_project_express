@@ -8,8 +8,6 @@ const app = express();
 
 const globalErrorHandler = require("./controllers/errorController");
 
-const { createUser, login } = require("./controllers/user");
-
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {})
@@ -27,9 +25,6 @@ app.use((req, res, next) => {
 });
 
 app.use(routes);
-
-app.post("signin", login);
-app.post("signup", createUser);
 
 app.use(globalErrorHandler);
 
