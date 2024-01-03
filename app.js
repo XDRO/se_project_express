@@ -14,7 +14,7 @@ mongoose
 const routes = require("./routes");
 
 app.use(express.json());
-
+// remove hard coded object below
 app.use((req, res, next) => {
   req.user = {
     _id: "657dae224a376abea9db5d7c",

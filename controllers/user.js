@@ -3,6 +3,11 @@ const user = require("../models/user");
 const { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } = require("../utils/error");
 
 const createUser = (req, res, next) => {
+  // 2nd task is to update this controller
+  // in addition to the name and avatar fields as seen below, this controller should also include email and password
+  // all data must be contained in req body, possibly in the .create and .then methods or maybe create a header, payload, and signature
+  // line above is speculation
+  // check if there is not an already an exsiting user with a matching email to the one in the req body
   const { name, avatar } = req.body;
   user
     .create({ name, avatar })
