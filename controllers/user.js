@@ -6,12 +6,13 @@ const {
   MONGO_DB_DUPLICATE_ERROR,
 } = require("../utils/error");
 
+const { JWT_SECRET } = require("../utils/config");
+
+const bcrypt = require("bcryptjs"); // use for sign up
+
+const jwt = require("jsonwebtoken");
+
 const createUser = (req, res, next) => {
-  // 2nd task is to update this controller
-  // in addition to the name and avatar fields as seen below, this controller should also include email and password
-  // all data must be contained in req body, possibly in the .create and .then methods or maybe create a header, payload, and signature
-  // line above is speculation
-  // check if there is not an already an exsiting user with a matching email to the one in the req body
   const { name, avatar, email, password } = req.body;
   user
     .create({ name, avatar, email, password })
@@ -63,4 +64,20 @@ const getUserById = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getUserById, getUsers };
+const login = (req, res) => {
+  const { email, password } = req.body;
+  return user
+    .findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      res.send({ token });
+    })
+    .catch((e) => {
+      // hanlde error properly
+      res.status(401).send({ message: e.message });
+    });
+};
+
+module.exports = { createUser, getUserById, getUsers, login };
