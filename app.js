@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 // auth and auth these routes
-app.use(routes);
+app.use(routes, auth, require("./routes/index"));
 
 app.use(globalErrorHandler);
 
