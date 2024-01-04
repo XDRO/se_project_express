@@ -4,6 +4,7 @@ const {
   HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
   MONGO_DB_DUPLICATE_ERROR,
+  HTTP_UNAUTHORIZED,
 } = require("../utils/error");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -64,7 +65,7 @@ const getUserById = (req, res, next) => {
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   return user
     .findUserByCredentials(email, password)
@@ -75,8 +76,11 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch((e) => {
-      // handle error properly
-      res.status(401).send({ message: e.message });
+      console.log(e.name);
+      if (e.name === "INVALID_EMAIL_PASSWORD") {
+        return res.status(401).send({ message: e.message });
+      }
+      res.status(400).send({ message: e.message });
     });
 };
 
