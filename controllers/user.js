@@ -35,34 +35,24 @@ const createUser = (req, res, next) => {
     });
 };
 
-const getUsers = (req, res, next) => {
-  user
-    .find({})
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      next(e);
-    });
-};
+// const getUsers = (req, res, next) => {
+//   user
+//     .find({})
+//     .then((item) => res.status(200).send({ data: item }))
+//     .catch((e) => {
+//       next(e);
+//     });
+// };
 
-const getUserById = (req, res, next) => {
-  const { userId } = req.params;
-  user
-    .findById(userId)
-    .orFail()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      if (e instanceof mongoose.CastError) {
-        const castError = new Error(e.message);
-        castError.statusCode = HTTP_BAD_REQUEST;
-        next(castError);
-      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
-        const notFoundError = new Error(e.message);
-        notFoundError.statusCode = HTTP_NOT_FOUND;
-        next(notFoundError);
-      } else {
-        next(e);
-      }
-    });
+// edit this function
+const getCurrentUser = (req, res, next) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
+  } else {
+    res.json(user);
+  }
 };
 
 const login = (req, res, next) => {
@@ -85,4 +75,4 @@ const login = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getUserById, getUsers, login };
+module.exports = { createUser, getCurrentUser, login };
