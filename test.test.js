@@ -124,6 +124,7 @@ const getCurrentUser = (req, res) => {
 
 // removed from get current user {}
 // const { userId } = req.params;
+
 // user
 //   .findById(userId)
 //   .orFail()

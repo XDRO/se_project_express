@@ -5,6 +5,7 @@ const {
   HTTP_NOT_FOUND,
   MONGO_DB_DUPLICATE_ERROR,
   HTTP_UNAUTHORIZED,
+  HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/error");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -46,13 +47,27 @@ const createUser = (req, res, next) => {
 
 // edit this function
 const getCurrentUser = (req, res, next) => {
-  const user = req.user;
+  const userId = req.user._id;
 
-  if (!user) {
-    return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
-  } else {
-    res.json(user);
-  }
+  user
+    .findById(userId)
+    .orFail()
+    .then((user) => {
+      if (!user) {
+        return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
+      }
+      const { id: _id, name, avatar, email } = user;
+      const userResponse = { id: _id, name, avatar, email };
+
+      res.json(userResponse);
+      console.log(userResponse);
+    })
+    .catch((e) => {
+      console.error("Error fetching user from the database: ", e);
+      res
+        .status(HTTP_INTERNAL_SERVER_ERROR)
+        .json({ error: "Internal server error" });
+    });
 };
 
 const login = (req, res, next) => {

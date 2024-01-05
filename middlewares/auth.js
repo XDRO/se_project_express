@@ -15,16 +15,12 @@ module.exports = (req, res, next) => {
   // const token = extractBearerToken(authorization);
   // let payload = jwt.verify(token, JWT_SECRET);
   const token = authorization.replace("Bearer ", "");
-  // let payload;
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
     req.user = payload;
-  } catch (err) {
+  } catch {
     return handleAuthError(res, "Invalid token");
   }
-
-  // req.user = payload;
-
   next();
 };

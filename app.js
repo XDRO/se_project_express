@@ -21,12 +21,10 @@ app.use(express.json());
 // remove hard coded object below
 app.use((req, res, next) => {
   req.user = {
-    _id: "657dae224a376abea9db5d7c",
+    _id: "6598854591f47a53b0a8916f",
   };
   next();
 });
-// auth and auth these routes
-// app.use(auth, require("./routes/index"));
 
 app.use(routes, auth, require("./routes/index"));
 
