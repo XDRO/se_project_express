@@ -79,8 +79,9 @@ const login = (req, res, next) => {
       console.log(e.name);
       if (e.name === "INVALID_EMAIL_PASSWORD") {
         return res.status(400).send({ message: e.message });
+      } else {
+        res.status(401).send({ message: e.message });
       }
-      res.status(401).send({ message: e.message });
     });
 };
 
