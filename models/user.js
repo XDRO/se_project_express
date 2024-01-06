@@ -51,16 +51,14 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       return Promise.reject(error);
     }
     // found
-    return bcrypt
-      .compare(password, user.password && email, user.email)
-      .then((matched) => {
-        if (!matched) {
-          const error = new Error("incorrect email or password");
-          error.name = "INVALID_EMAIL_PASSWORD";
-          return Promise.reject(error);
-        }
-        return user;
-      });
+    return bcrypt.compare(password && user.password).then((matched) => {
+      if (!matched) {
+        const error = new Error("incorrect email or password");
+        error.name = "INVALID_EMAIL_PASSWORD";
+        return Promise.reject(error);
+      }
+      return user;
+    });
   });
 };
 module.exports = mongoose.model("user", userSchema);

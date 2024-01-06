@@ -42,6 +42,45 @@ app.patch("/api/v1/movies/:id", (req, res) => {
   });
 });
 
+// previous code for update user controller
+const updateUser = (req, res) => {
+  const { userId } = req.params;
+  const { avatar } = req.body;
+  const { name } = req.body;
+
+  user
+    .findByIdAndUpdate(userId, { $set: { avatar } }, { new: true })
+    .orFail()
+    .then((user) => res.status(200).send({ data: user }))
+    .catch((e) => {
+      res.status(500).send({ message: "Error from update user", e });
+    });
+};
+
+// working on currently
+app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
+  const userId = req.user._id;
+  console.log(userId);
+  const user = users.find((el) => el.id == userId);
+
+  if (!user) {
+    return res.status(404).json({
+      status: "fail",
+      message: "No user object with ID" + userId + "is found ",
+    });
+  }
+  const userIndex = users.indexof(user);
+
+  Object.assign(user, req.params);
+
+  users[userIndex] = user;
+
+  FileSystem.writeFile("/users/me.json", JSON.stringify(users), (err) => {
+    res.status(200).json({ status: "success", data: { user: user } });
+  });
+  next();
+});
+
 // const path = require("path");
 // const express = require("express");
 // const bodyParser = require("body-parser");

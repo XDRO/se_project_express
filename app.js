@@ -18,11 +18,10 @@ mongoose
 const routes = require("./routes");
 
 app.use(express.json());
-// remove hard coded object below
+
+// old code below
 app.use((req, res, next) => {
-  req.user = {
-    _id: "6598854591f47a53b0a8916f",
-  };
+  req.user = { _id: req.user._id };
   next();
 });
 
@@ -33,3 +32,17 @@ app.use(globalErrorHandler);
 app.listen(PORT, () => {});
 
 // run in gitbash to start database "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"
+// const fs = require("fs");
+// let users = JSON.parse(fs.readFileSync("/users"));
+
+// const users = require("./user");
+
+// GET - users/me, I need to retrieve the current user here, maybe I can just use the getCurrentuser
+// app.get("/users/me", (req, res) => {
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       users: users,
+//     },
+//   });
+// });

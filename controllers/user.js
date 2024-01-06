@@ -36,14 +36,14 @@ const createUser = (req, res, next) => {
     });
 };
 
-// const getUsers = (req, res, next) => {
-//   user
-//     .find({})
-//     .then((item) => res.status(200).send({ data: item }))
-//     .catch((e) => {
-//       next(e);
-//     });
-// };
+const getUsers = (req, res, next) => {
+  user
+    .find({})
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((e) => {
+      next(e);
+    });
+};
 
 // update user controller
 const updateUser = (req, res) => {
@@ -62,7 +62,7 @@ const updateUser = (req, res) => {
 
 // edit this function
 const getCurrentUser = (req, res) => {
-  const userId = req.user._id;
+  const { userId } = req.params;
 
   user
     .findById(userId)
@@ -105,4 +105,4 @@ const login = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getCurrentUser, updateUser, login };
+module.exports = { createUser, getCurrentUser, updateUser, login, getUsers };

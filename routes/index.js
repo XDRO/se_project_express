@@ -11,6 +11,7 @@ const {
   login,
   getCurrentUser,
   updateUser,
+  getUsers,
 } = require("../controllers/user");
 
 router.use("/items", clothingItem);
@@ -18,7 +19,8 @@ router.use("/users", user);
 router.use("/signin", login);
 router.use("/signup", createUser);
 router.use("/users/me", getCurrentUser);
-router.patch("/users/me/:id", updateUser);
+router.use("/users", getUsers);
+router.patch("/users/me", updateUser);
 
 router.use((req, res) => {
   res.status(HTTP_NOT_FOUND).send({ message: "Router not found" });
