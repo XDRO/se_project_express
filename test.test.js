@@ -1,3 +1,47 @@
+// this is a rough hypothesis of what I'll need to do inside of my patch request
+// my goal is to seprate this into a controller and a route
+application.patch("/users/me/:id", (req, res) => {
+  let userId = req.params.userId; // change req object to whatever is needed, * 1
+  let userUpdate = user.find((el) => el.userId === userId); // instead of userId he just uses id
+  let index = user.indexOf(userUpdate);
+
+  Object.assign(userUpdate, req.body);
+
+  users[index] = userUpdate;
+
+  FileSystem.writeFile("/user/me.json", JSON.stringify(movies), (err) => {
+    // unsure whether or not this is the correct path
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: userUpdate,
+      },
+    });
+  }); // FileSystem is called fs in youtube video
+}); //possibly add this id property
+
+// Here below is the exact code written in the video
+app.patch("/api/v1/movies/:id", (req, res) => {
+  let id = req.params.id * 1;
+  let movieToUpdate = movies.find((el) => el.id === id);
+  // error handling
+  if (!movieToUpdate) {
+    return res.status(404).json({
+      status: "fail",
+      message: "No movie object with ID" + id + "is found",
+    });
+  }
+  let index = movies.indexOf(movieToUpdate);
+  // you can use a spread operator, look into what that is, instead of Object.assign
+  Object.assign(movieToUpdate, req.body);
+
+  movies[index] = moviesToUpdate;
+  // Just to remember 201 request is creating something successfully
+  fs.writeFile("./data/movies.json", JSON.stringify(movies), (err) => {
+    res.status(200).json({ status: "success", data: { movie: movieToUpdate } });
+  });
+});
+
 // const path = require("path");
 // const express = require("express");
 // const bodyParser = require("body-parser");
@@ -97,26 +141,26 @@
 // Import your user model if you have one
 // const User = require('../models/User');
 
-const getCurrentUser = (req, res) => {
-  // Assuming you have a user model with _id property / user.js model
-  // Replace this with your actual logic to get the logged-in user
-  const userId = req.user._id; // Assuming user data is attached to the request object
+// const getCurrentUser = (req, res) => {
+//   // Assuming you have a user model with _id property / user.js model
+//   // Replace this with your actual logic to get the logged-in user
+//   const userId = req.user._id; // Assuming user data is attached to the request object
 
-  // Replace this with your actual logic to fetch user data from the database
-  // const user = await User.findById(userId);
+//   // Replace this with your actual logic to fetch user data from the database
+//   // const user = await User.findById(userId);
 
-  const user = {
-    _id: userId,
-    username: "exampleUser",
-    // Other user properties
-  };
+//   const user = {
+//     _id: userId,
+//     username: "exampleUser",
+//     // Other user properties
+//   };
 
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
+//   if (!user) {
+//     return res.status(404).json({ error: "User not found" });
+//   }
 
-  res.json(user);
-};
+//   res.json(user);
+// };
 
 // module.exports = {
 //   getCurrentUser,
@@ -141,4 +185,4 @@ const getCurrentUser = (req, res) => {
 //     } else {
 //       next(e);
 //     }
-//   });
+//   });w

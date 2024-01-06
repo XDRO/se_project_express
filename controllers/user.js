@@ -45,8 +45,23 @@ const createUser = (req, res, next) => {
 //     });
 // };
 
+// update user controller
+const updateUser = (req, res) => {
+  const { userId } = req.params;
+  const { avatar } = req.body;
+  const { name } = req.body;
+
+  user
+    .findByIdAndUpdate(userId, { $set: { avatar } }, { new: true })
+    .orFail()
+    .then((user) => res.status(200).send({ data: user }))
+    .catch((e) => {
+      res.status(500).send({ message: "Error from update user", e });
+    });
+};
+
 // edit this function
-const getCurrentUser = (req, res, next) => {
+const getCurrentUser = (req, res) => {
   const userId = req.user._id;
 
   user
@@ -56,8 +71,8 @@ const getCurrentUser = (req, res, next) => {
       if (!user) {
         return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
       }
-      const { id: _id, name, avatar, email } = user;
-      const userResponse = { id: _id, name, avatar, email };
+      const { id: userId, name, avatar, email } = user;
+      const userResponse = { id: userId, name, avatar, email };
 
       res.json(userResponse);
       console.log(userResponse);
@@ -90,4 +105,4 @@ const login = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getCurrentUser, login };
+module.exports = { createUser, getCurrentUser, updateUser, login };
