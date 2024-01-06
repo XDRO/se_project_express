@@ -36,14 +36,14 @@ const createUser = (req, res, next) => {
     });
 };
 
-const getUsers = (req, res, next) => {
-  user
-    .find({})
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      next(e);
-    });
-};
+// const getUsers = (req, res, next) => {
+//   user
+//     .find({})
+//     .then((item) => res.status(200).send({ data: item }))
+//     .catch((e) => {
+//       next(e);
+//     });
+// };
 
 // update user controller
 const updateUser = (req, res) => {
@@ -96,7 +96,7 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((e) => {
-      console.log(e.name);
+      console.error(e);
       if (e.name === "INVALID_EMAIL_PASSWORD") {
         return res.status(400).send({ message: e.message });
       } else {
@@ -105,4 +105,4 @@ const login = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getCurrentUser, updateUser, login, getUsers };
+module.exports = { createUser, getCurrentUser, updateUser, login };

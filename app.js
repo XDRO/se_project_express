@@ -8,7 +8,7 @@ const app = express();
 
 const globalErrorHandler = require("./controllers/errorController");
 
-const auth = require("./middlewares/auth");
+// const auth = require("./middlewares/auth");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -21,7 +21,7 @@ app.use(express.json());
 
 // removed hard coded object
 
-app.use(routes, auth, require("./routes/index"));
+app.use(routes, require("./routes/index"));
 
 app.use(globalErrorHandler);
 
