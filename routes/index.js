@@ -16,11 +16,7 @@ const {
 } = require("../controllers/user");
 
 router.use("/signin", login);
-router.use("/signup", createUser, (req, res) => {
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => createUser({ email: req.body.email, password: hash }));
-});
+router.use("/signup", createUser);
 router.use("/items", clothingItem);
 
 // will need authentication

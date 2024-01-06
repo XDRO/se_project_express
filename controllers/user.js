@@ -14,39 +14,51 @@ const bcrypt = require("bcryptjs"); // use for sign up
 
 const jwt = require("jsonwebtoken");
 
-const createUser = (req, res, next) => {
-  const { name, avatar, email, password } = req.body;
-  user
-    .create({ name, avatar, email, password })
-    .then((item) => {
-      res.send({ data: item });
-    })
-    .catch((e) => {
-      if (e.name === "ValidationError") {
-        const validationError = new Error(e.message);
-        validationError.statusCode = HTTP_BAD_REQUEST;
-        next(validationError);
-      } else if (e.statusCode === 11000) {
-        const duplicateKeyError = new Error(e.message);
-        duplicateKeyError.statusCode = MONGO_DB_DUPLICATE_ERROR;
-        throw duplicateKeyError;
-      } else {
-        next(e);
-      }
+const createUser = async (req, res, next) => {
+  try {
+    const { name, avatar, email, password } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+
+    const newUser = await user.create({
+      name,
+      avatar,
+      email,
+      password: hash,
     });
+
+    const responseData = {
+      newUser: {
+        name: newUser.name,
+        avatar: newUser.avatar,
+        email: newUser.email,
+      },
+    };
+
+    res.send(responseData);
+  } catch (e) {
+    if (e.name === "ValidationError") {
+      const validationError = new Error(e.message);
+      validationError.statusCode = HTTP_BAD_REQUEST;
+      next(validationError);
+    } else if (e.code === 11000) {
+      const duplicateKeyError = new Error(e.message);
+      duplicateKeyError.statusCode = MONGO_DB_DUPLICATE_ERROR;
+      next(duplicateKeyError);
+    } else {
+      next(e);
+    }
+  }
 };
 
-// const getUsers = (req, res, next) => {
-//   user
-//     .find({})
-//     .then((item) => res.status(200).send({ data: item }))
-//     .catch((e) => {
-//       next(e);
-//     });
-// };
+// (req, res) => {
+//   bcrypt
+//     .hash(req.body.password, 10)
+//     .then((hash) => createUser({ email: req.body.email, password: hash }));
+// }
 
 // update user controller
 const updateUser = (req, res) => {
+  // get user from the req.user._id not the req.params
   const { userId } = req.params;
   const { avatar } = req.body;
   const { name } = req.body;
@@ -62,17 +74,17 @@ const updateUser = (req, res) => {
 
 // edit this function
 const getCurrentUser = (req, res) => {
-  const { userId } = req.params;
+  const id = req.user._id;
 
   user
-    .findById(userId)
+    .findById(id)
     .orFail()
     .then((user) => {
       if (!user) {
         return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
       }
-      const { id: userId, name, avatar, email } = user;
-      const userResponse = { id: userId, name, avatar, email };
+      const { id, name, avatar, email } = user;
+      const userResponse = { id, name, avatar, email };
 
       res.json(userResponse);
       console.log(userResponse);
@@ -106,3 +118,12 @@ const login = (req, res, next) => {
 };
 
 module.exports = { createUser, getCurrentUser, updateUser, login };
+
+// const getUsers = (req, res, next) => {
+//   user
+//     .find({})
+//     .then((item) => res.status(200).send({ data: item }))
+//     .catch((e) => {
+//       next(e);
+//     });
+// };
