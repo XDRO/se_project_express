@@ -12,8 +12,7 @@ module.exports = (req, res, next) => {
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return handleAuthError(res);
   }
-  // const token = extractBearerToken(authorization);
-  // let payload = jwt.verify(token, JWT_SECRET);
+
   const token = authorization.replace("Bearer ", "");
 
   try {

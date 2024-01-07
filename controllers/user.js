@@ -19,7 +19,35 @@ const createUser = async (req, res, next) => {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
-    if (!email) {
+    if (name.length == 2 || name.length > 30) {
+      const validationError = new Error("validation error");
+      validationError.statusCode = HTTP_BAD_REQUEST;
+      throw validationError;
+    }
+    // make it so that an avater link that is not valid returns a custom error statment
+    // now this statment is ran if an additional user is added with an existing email to the database
+    // when existingUser should run
+    // work on this function monday,
+    // I want to say to try and refactor your error handlers,
+    //not only into another file but into async await functions
+
+    // const isValidUrl = (url) => {
+    //   try {
+    //     new URL(url);
+    //     return true;
+    //   } catch (error) {
+    //     return false;
+    //   }
+    // };
+
+    // if (!avatar || isValidUrl(avatar)) {
+    //   return res
+    //     .status(HTTP_BAD_REQUEST)
+    //     .json({ message: "Invalid avatar Url" });
+    // }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       const validationError = new Error("Email cannot be empty");
       validationError.statusCode = HTTP_BAD_REQUEST;
       throw validationError;
