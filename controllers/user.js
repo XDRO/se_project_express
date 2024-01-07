@@ -12,11 +12,18 @@ const { JWT_SECRET } = require("../utils/config");
 const bcrypt = require("bcryptjs"); // use for sign up
 
 const jwt = require("jsonwebtoken");
+const e = require("express");
 
 const createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
+
+    if (!email) {
+      const validationError = new Error("Email cannot be empty");
+      validationError.statusCode = HTTP_BAD_REQUEST;
+      throw validationError;
+    }
 
     const existingUser = await user.findOne({ email });
     if (existingUser) {
@@ -42,27 +49,9 @@ const createUser = async (req, res, next) => {
 
     res.send(responseData);
   } catch (e) {
-    if (e.name === "ValidationError") {
-      const validationError = new Error(e.message);
-      validationError.statusCode = HTTP_BAD_REQUEST;
-      next(validationError);
-    } else {
-      next(e);
-    }
+    next(e);
   }
 };
-
-// removed from above since i am checking if there is an email that is existing before creating the user object again
-//  else if (e.code === 11000) {
-// const duplicateKeyError = new Error(e.message);
-// duplicateKeyError.statusCode = MONGO_DB_DUPLICATE_ERROR;
-// next(duplicateKeyError);
-
-// (req, res) => {
-//   bcrypt
-//     .hash(req.body.password, 10)
-//     .then((hash) => createUser({ email: req.body.email, password: hash }));
-// }
 
 // update user controller
 const updateUser = (req, res) => {
@@ -126,12 +115,3 @@ const login = (req, res, next) => {
 };
 
 module.exports = { createUser, getCurrentUser, updateUser, login };
-
-// const getUsers = (req, res, next) => {
-//   user
-//     .find({})
-//     .then((item) => res.status(200).send({ data: item }))
-//     .catch((e) => {
-//       next(e);
-//     });
-// };
