@@ -3,8 +3,7 @@ const user = require("../models/user");
 const {
   HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
-  MONGO_DB_DUPLICATE_ERROR,
-  HTTP_UNAUTHORIZED,
+  HTTP_CONFLICT,
   HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/error");
 
@@ -18,6 +17,13 @@ const createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
+
+    const existingUser = await user.findOne({ email });
+    if (existingUser) {
+      const duplicateEmailError = new Error("Email already exsits");
+      duplicateEmailError.statusCode = HTTP_CONFLICT;
+      throw duplicateEmailError;
+    }
 
     const newUser = await user.create({
       name,
@@ -40,15 +46,17 @@ const createUser = async (req, res, next) => {
       const validationError = new Error(e.message);
       validationError.statusCode = HTTP_BAD_REQUEST;
       next(validationError);
-    } else if (e.code === 11000) {
-      const duplicateKeyError = new Error(e.message);
-      duplicateKeyError.statusCode = MONGO_DB_DUPLICATE_ERROR;
-      next(duplicateKeyError);
     } else {
       next(e);
     }
   }
 };
+
+// removed from above since i am checking if there is an email that is existing before creating the user object again
+//  else if (e.code === 11000) {
+// const duplicateKeyError = new Error(e.message);
+// duplicateKeyError.statusCode = MONGO_DB_DUPLICATE_ERROR;
+// next(duplicateKeyError);
 
 // (req, res) => {
 //   bcrypt
