@@ -1,10 +1,8 @@
-const { default: mongoose } = require("mongoose");
 const user = require("../models/user");
 const {
-  HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
-  HTTP_CONFLICT,
   HTTP_INTERNAL_SERVER_ERROR,
+  HTTP_BAD_REQUEST,
 } = require("../utils/error");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -12,52 +10,19 @@ const { JWT_SECRET } = require("../utils/config");
 const bcrypt = require("bcryptjs"); // use for sign up
 
 const jwt = require("jsonwebtoken");
-const e = require("express");
+
+const { createUserErrors } = require("./errorController");
 
 const createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
-    if (name.length == 2 || name.length > 30) {
-      const validationError = new Error("validation error");
-      validationError.statusCode = HTTP_BAD_REQUEST;
-      throw validationError;
-    }
-    // make it so that an avater link that is not valid returns a custom error statment
-    // now this statment is ran if an additional user is added with an existing email to the database
-    // when existingUser should run
-    // work on this function monday,
-    // I want to say to try and refactor your error handlers,
-    //not only into another file but into async await functions
-
-    // const isValidUrl = (url) => {
-    //   try {
-    //     new URL(url);
-    //     return true;
-    //   } catch (error) {
-    //     return false;
-    //   }
-    // };
-
-    // if (!avatar || isValidUrl(avatar)) {
-    //   return res
-    //     .status(HTTP_BAD_REQUEST)
-    //     .json({ message: "Invalid avatar Url" });
-    // }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      const validationError = new Error("Email cannot be empty");
-      validationError.statusCode = HTTP_BAD_REQUEST;
-      throw validationError;
-    }
-
-    const existingUser = await user.findOne({ email });
-    if (existingUser) {
-      const duplicateEmailError = new Error("Email already exsits");
-      duplicateEmailError.statusCode = HTTP_CONFLICT;
-      throw duplicateEmailError;
+    const hasSignUpErrors = await createUserErrors();
+    if (hasSignUpErrors) {
+      return res
+        .status(HTTP_BAD_REQUEST)
+        .json({ message: "Error from user sign up" });
     }
 
     const newUser = await user.create({
