@@ -225,3 +225,40 @@ app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
 //       next(e);
 //     }
 //   });w
+
+// Code for error controller createUserErrors, doesn't work, may come in handy one day, I doubt it as of right now though
+
+// try {
+//   const { name, avatar, email } = req.body;
+//   if (name.length == 2 || name.length > 30) {
+//     const validationError = new Error({ message: error.message });
+//     validationError.statusCode = HTTP_BAD_REQUEST;
+//     throw validationError;
+//   }
+//   const existingUser = await user.findOne({ email });
+//   if (existingUser) {
+//     const duplicateEmailError = new Error({ message: error.message });
+//     duplicateEmailError.statusCode = HTTP_CONFLICT;
+//     throw duplicateEmailError;
+//   }
+//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   if (!email || !emailRegex.test(email)) {
+//     const validationError = new Error({ message: error.message });
+//     validationError.statusCode = HTTP_BAD_REQUEST;
+//     throw validationError;
+//   }
+//   const isValidUrl = (url) => {
+//     try {
+//       new URL(url);
+//       return true;
+//     } catch (error) {
+//       return false;
+//     }
+//   };
+
+//   if (!avatar || isValidUrl(avatar)) {
+//     return res.status(HTTP_BAD_REQUEST).json({ message: error.message });
+//   }
+// } catch {
+//   console.log(error);
+// }

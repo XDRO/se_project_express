@@ -23,8 +23,8 @@ app.use(express.json());
 // removed hard coded object
 
 app.use(routes, require("./routes/index"));
-app.use(createUserErrors);
-app.use(globalErrorHandler);
+
+app.use(createUserErrors, globalErrorHandler);
 
 app.listen(PORT, () => {});
 
