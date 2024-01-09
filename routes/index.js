@@ -8,8 +8,6 @@ const { HTTP_NOT_FOUND } = require("../utils/error");
 
 const auth = require("../middlewares/auth");
 
-// const { userValidation } = require("../middlewares/validation");
-
 const userValidation = require("../middlewares/validation");
 
 const {
