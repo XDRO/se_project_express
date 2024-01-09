@@ -7,6 +7,3 @@ module.exports.globalErrorHandler = (error, req, res, next) => {
   });
   next();
 };
-
-// // This goes in the route file
-// // router.patch("/me", validateUserPatch, updateUserData);
