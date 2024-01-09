@@ -11,19 +11,19 @@ const bcrypt = require("bcryptjs"); // use for sign up
 
 const jwt = require("jsonwebtoken");
 
-const { createUserErrors } = require("./errorController");
+// const { createUserErrors } = require("./errorController");
 
 const createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
-    const hasSignUpErrors = await createUserErrors();
-    if (hasSignUpErrors) {
-      return res
-        .status(HTTP_BAD_REQUEST)
-        .json({ message: "Error from user sign up" });
-    }
+    // const hasSignUpErrors = await createUserErrors();
+    // if (hasSignUpErrors) {
+    //   return res
+    //     .status(HTTP_BAD_REQUEST)
+    //     .json({ message: "Error from user sign up" });
+    // }
 
     const newUser = await user.create({
       name,
