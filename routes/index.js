@@ -8,7 +8,7 @@ const { HTTP_NOT_FOUND } = require("../utils/error");
 
 const auth = require("../middlewares/auth");
 
-const userValidation = require("../middlewares/validation");
+const userValidation = require("../middlewares/userValidation");
 
 const {
   createUser,
@@ -23,8 +23,7 @@ router.use("/items", clothingItem);
 
 // will need authentication
 router.use("/users", auth, user);
-router.use("/users/me", auth, getCurrentUser);
-router.patch("/users/me", auth, updateUser);
+router.use("/users/me", auth, updateUser, getCurrentUser);
 
 router.use((req, res) => {
   res.status(HTTP_NOT_FOUND).send({ message: "Router not found" });

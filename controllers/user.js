@@ -2,6 +2,9 @@ const user = require("../models/user");
 const {
   HTTP_NOT_FOUND,
   HTTP_INTERNAL_SERVER_ERROR,
+  HTTP_OK_REQUEST,
+  HTTP_BAD_REQUEST,
+  HTTP_UNAUTHORIZED,
 } = require("../utils/error");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -36,27 +39,26 @@ const createUser = async (req, res, next) => {
   }
 };
 
+// Come back and try to refactor all function into async await functions,
+// this will help clean up the code, as well as only needing the validation for users
 // update user controller
 const updateUser = (req, res) => {
-  // get user from the req.user._id not the req.params
-  const { userId } = req.user._id;
-  const { avatar } = req.body;
-  const { name } = req.body;
-
-  user.findByIdAndUpdate(userId, { $set: { name, avatar } }, { new: true });
-  console
-    .log({ name })
+  const userId = req.user._id;
+  const { name, avatar } = req.body;
+  user
+    .findByIdAndUpdate(userId, { $set: { name, avatar } }, { new: true })
     .orFail()
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(HTTP_OK_REQUEST).send({ data: user }))
     .catch((e) => {
-      res.status(500).send({ message: "Error from update user", e });
+      res
+        .status(HTTP_INTERNAL_SERVER_ERROR)
+        .send({ message: "Error from update user", e });
     });
 };
 
 // edit this function
 const getCurrentUser = (req, res) => {
   const id = req.user._id;
-
   user
     .findById(id)
     .orFail()
@@ -68,7 +70,7 @@ const getCurrentUser = (req, res) => {
       const userResponse = { id, name, avatar, email };
 
       res.json(userResponse);
-      console.log(userResponse);
+      // console.log(userResponse);
     })
     .catch((e) => {
       console.error("Error fetching user from the database: ", e);
@@ -91,9 +93,9 @@ const login = (req, res, next) => {
     .catch((e) => {
       console.error(e);
       if (e.name === "INVALID_EMAIL_PASSWORD") {
-        return res.status(400).send({ message: e.message });
+        return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
       } else {
-        res.status(401).send({ message: e.message });
+        res.status(HTTP_UNAUTHORIZED).send({ message: e.message });
       }
     });
 };
