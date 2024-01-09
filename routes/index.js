@@ -8,6 +8,8 @@ const { HTTP_NOT_FOUND } = require("../utils/error");
 
 const auth = require("../middlewares/auth");
 
+const { userValidation } = require("../controllers/validationController");
+
 const {
   createUser,
   login,
@@ -16,7 +18,7 @@ const {
 } = require("../controllers/user");
 
 router.use("/signin", login);
-router.use("/signup", createUser);
+router.use("/signup", userValidation, createUser);
 router.use("/items", clothingItem);
 
 // will need authentication
