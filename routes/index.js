@@ -30,3 +30,5 @@ router.use((req, res) => {
 });
 
 module.exports = router;
+
+// run this npm run lint

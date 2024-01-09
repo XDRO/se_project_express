@@ -1,4 +1,5 @@
 const user = require("../models/user");
+// will remove this after async await refactor of all functions
 const {
   HTTP_NOT_FOUND,
   HTTP_INTERNAL_SERVER_ERROR,
