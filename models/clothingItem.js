@@ -26,6 +26,9 @@ const clothingItem = new mongoose.Schema({
     ref: user,
     required: true,
   },
+  createdAt: {
+    required: Date,
+  },
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,

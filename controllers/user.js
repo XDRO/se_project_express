@@ -45,6 +45,7 @@ const createUser = async (req, res, next) => {
 // update user controller
 const updateUser = (req, res) => {
   const userId = req.user._id;
+  console.log(userId);
   const { name, avatar } = req.body;
   user
     .findByIdAndUpdate(userId, { $set: { name, avatar } }, { new: true })

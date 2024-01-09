@@ -1,29 +1,59 @@
 const { default: mongoose } = require("mongoose");
 
-const ClothingItem = require("../models/clothingItem");
+// const ClothingItem = require("../models/clothingItem");
 
 const {
   HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
   HTTP_OK_REQUEST,
 } = require("../utils/error");
+const clothingItems = require("../models/clothingItem");
 
-module.exports.createItem = (req, res, next) => {
-  const { name, weather, imageUrl } = req.body;
+module.exports.createItem = async (req, res, next) => {
+  try {
+    const { name, weather, imageUrl, createdAt } = req.body;
+    const { owner } = req.body;
+    console.log({ owner });
 
-  ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
-    .then((item) => {
-      res.send({ data: item });
-    })
-    .catch((e) => {
-      if (e.name === "ValidationError") {
-        const validationError = new Error(e.message);
-        validationError.statusCode = HTTP_BAD_REQUEST;
-        next(validationError);
-      }
-      next(e);
+    const newItem = await clothingItems.create({
+      name,
+      weather,
+      imageUrl,
+      createdAt,
+      owner,
     });
+
+    const responseData = {
+      owner: {
+        name: newItem.name,
+        weather: newItem.weather,
+        imageUrl: newItem.imageUrl,
+        createdAt: newItem.createdAt,
+        owner: newItem.owner,
+      },
+    };
+
+    res.send(responseData);
+  } catch (e) {
+    next(e);
+  }
 };
+
+// const { name, weather, imageUrl } = req.body;
+// const { owner } = req.user._id;
+
+// ClothingItem.create({ name, weather, imageUrl, owner })
+//   .then((item) => {
+//     res.send({ data: item });
+//   })
+//   .catch((e) => {
+//     if (e.name === "ValidationError") {
+//       const validationError = new Error(e.message);
+//       validationError.statusCode = HTTP_BAD_REQUEST;
+//       next(validationError);
+//     }
+//     next(e);
+//   });
 
 module.exports.getItems = (req, res, next) => {
   ClothingItem.find({})
