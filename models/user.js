@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 8,
     select: false,
-    // use this select in the findUserByCredentials method task 9
   },
 });
 

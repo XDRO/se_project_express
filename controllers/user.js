@@ -39,7 +39,7 @@ const createUser = async (req, res, next) => {
 // update user controller
 const updateUser = (req, res) => {
   // get user from the req.user._id not the req.params
-  const { userId } = req.params;
+  const { userId } = req.user._id;
   const { avatar } = req.body;
   const { name } = req.body;
 
