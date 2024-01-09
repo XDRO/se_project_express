@@ -43,8 +43,9 @@ const updateUser = (req, res) => {
   const { avatar } = req.body;
   const { name } = req.body;
 
-  user
-    .findByIdAndUpdate(userId, { $set: { avatar } }, { new: true })
+  user.findByIdAndUpdate(userId, { $set: { name, avatar } }, { new: true });
+  console
+    .log({ name })
     .orFail()
     .then((user) => res.status(200).send({ data: user }))
     .catch((e) => {
