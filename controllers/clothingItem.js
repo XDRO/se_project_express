@@ -1,7 +1,5 @@
 const { default: mongoose } = require("mongoose");
 
-// const ClothingItem = require("../models/clothingItem");
-
 const {
   HTTP_BAD_REQUEST,
   HTTP_NOT_FOUND,
@@ -12,7 +10,7 @@ const clothingItems = require("../models/clothingItem");
 module.exports.createItem = async (req, res, next) => {
   try {
     const { name, weather, imageUrl, createdAt } = req.body;
-    const { owner } = req.body;
+    const owner = req.user._id;
     console.log({ owner });
 
     const newItem = await clothingItems.create({
@@ -24,7 +22,7 @@ module.exports.createItem = async (req, res, next) => {
     });
 
     const responseData = {
-      owner: {
+      newItem: {
         name: newItem.name,
         weather: newItem.weather,
         imageUrl: newItem.imageUrl,
@@ -56,7 +54,8 @@ module.exports.createItem = async (req, res, next) => {
 //   });
 
 module.exports.getItems = (req, res, next) => {
-  ClothingItem.find({})
+  clothingItems
+    .find({})
     .then((items) => res.status(200).send(items))
     .catch((e) => {
       next(e);
@@ -66,7 +65,8 @@ module.exports.getItems = (req, res, next) => {
 module.exports.deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  clothingItems
+    .findByIdAndDelete(itemId)
     .orFail()
     .then((item) => res.status(HTTP_OK_REQUEST).send({ item }))
     .catch((e) => {
@@ -85,11 +85,12 @@ module.exports.deleteItem = (req, res, next) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
+  clothingItems
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    )
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
@@ -108,11 +109,12 @@ module.exports.likeItem = (req, res, next) => {
 };
 
 module.exports.dislikeItem = (req, res, next) => {
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
+  clothingItems
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $pull: { likes: req.user._id } },
+      { new: true },
+    )
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
