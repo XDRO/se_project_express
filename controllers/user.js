@@ -43,6 +43,7 @@ const createUser = async (req, res, next) => {
 // Come back and try to refactor all function into async await functions,
 // this will help clean up the code, as well as only needing the validation for users
 // update user controller
+
 const updateUser = (req, res) => {
   const userId = req.user._id;
   console.log(userId);
