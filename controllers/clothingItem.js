@@ -22,13 +22,12 @@ module.exports.createItem = async (req, res, next) => {
     });
 
     const responseData = {
-      newItem: {
-        name: newItem.name,
-        weather: newItem.weather,
-        imageUrl: newItem.imageUrl,
-        createdAt: newItem.createdAt,
-        owner: newItem.owner,
-      },
+      _id: newItem._id,
+      name: newItem.name,
+      weather: newItem.weather,
+      imageUrl: newItem.imageUrl,
+      createdAt: newItem.createdAt,
+      owner: newItem.owner,
     };
 
     res.send(responseData);
@@ -36,22 +35,6 @@ module.exports.createItem = async (req, res, next) => {
     next(e);
   }
 };
-
-// const { name, weather, imageUrl } = req.body;
-// const { owner } = req.user._id;
-
-// ClothingItem.create({ name, weather, imageUrl, owner })
-//   .then((item) => {
-//     res.send({ data: item });
-//   })
-//   .catch((e) => {
-//     if (e.name === "ValidationError") {
-//       const validationError = new Error(e.message);
-//       validationError.statusCode = HTTP_BAD_REQUEST;
-//       next(validationError);
-//     }
-//     next(e);
-//   });
 
 module.exports.getItems = (req, res, next) => {
   clothingItems

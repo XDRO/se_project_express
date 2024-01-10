@@ -8,12 +8,14 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItem");
 
+const itemValidation = require("../middlewares/itemvalidation");
+
 // I might need middle ware to give access to secific users,
 // to preform certain actions
 
 const auth = require("../middlewares/auth");
 
-router.post("/", auth, createItem);
+router.post("/", auth, itemValidation, createItem);
 
 router.get("/", getItems);
 
