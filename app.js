@@ -28,4 +28,4 @@ app.use(globalErrorHandler);
 
 app.listen(PORT, () => {});
 
-// run in gitbash to start database "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"
+// "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data"

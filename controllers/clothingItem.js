@@ -46,7 +46,7 @@ module.exports.getItems = (req, res, next) => {
 };
 
 module.exports.deleteItem = (req, res, next) => {
-  const { itemId } = req.params;
+  const itemId = req.params.itemId;
 
   clothingItems
     .findByIdAndDelete(itemId)
@@ -68,11 +68,11 @@ module.exports.deleteItem = (req, res, next) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
-  const { _id } = req.body;
-  console.log({ _id });
+  const itemId = req.params.itemId;
+  console.log({ itemId });
   clothingItems
     .findByIdAndUpdate(
-      req.params,
+      itemId,
       { $addToSet: { likes: req.user._id } },
       { new: true },
     )
@@ -94,9 +94,10 @@ module.exports.likeItem = (req, res, next) => {
 };
 
 module.exports.dislikeItem = (req, res, next) => {
+  const itemId = req.params.itemId;
   clothingItems
     .findByIdAndUpdate(
-      req.params.itemId,
+      itemId,
       { $pull: { likes: req.user._id } },
       { new: true },
     )
