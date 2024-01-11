@@ -358,32 +358,32 @@ module.exports.deleteItem = (req, res, next) => {
 //   }
 // };
 
-// module.exports.deleteItem = (req, res, next) => {
-//   const userId = req.user._id;
+module.exports.deleteItem = (req, res, next) => {
+  const userId = req.user._id;
 
-//   const userIdObjectId = mongoose.Types.ObjectId(userId);
+  const userIdObjectId = mongoose.Types.ObjectId(userId);
 
-//   clothingItems
-//     .find({ _id: itemId, owner: userIdObjectId })
-//     // .findByIdAndDelete(itemId)
-//     .orFail()
-//     .then((item) => {
-//       // if (userIdObjectId != userId) {
-//       //   return res.status(403).json({ message: "forbidden" });
-//       // }
-//       res.status(HTTP_OK_REQUEST).send({ item });
-//     })
-//     .catch((e) => {
-//       if (e instanceof mongoose.CastError) {
-//         const castError = new Error(e.message);
-//         castError.statusCode = HTTP_BAD_REQUEST;
-//         next(castError);
-//       } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
-//         const notFoundError = new Error(e.message);
-//         notFoundError.statusCode = HTTP_NOT_FOUND;
-//         next(notFoundError);
-//       } else {
-//         next(e);
-//       }
-//     });
-// };
+  clothingItems
+    .find({ _id: itemId, owner: userIdObjectId })
+    // .findByIdAndDelete(itemId)
+    .orFail()
+    .then((item) => {
+      // if (userIdObjectId != userId) {
+      //   return res.status(403).json({ message: "forbidden" });
+      // }
+      res.status(HTTP_OK_REQUEST).send({ item });
+    })
+    .catch((e) => {
+      if (e instanceof mongoose.CastError) {
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
+      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+        const notFoundError = new Error(e.message);
+        notFoundError.statusCode = HTTP_NOT_FOUND;
+        next(notFoundError);
+      } else {
+        next(e);
+      }
+    });
+};

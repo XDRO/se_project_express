@@ -49,21 +49,21 @@ module.exports.getItems = (req, res, next) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  const owner = req.params.itemId; // add something to this
+  const owner = req.params.itemId;
   console.log({ owner });
   const reqUser = req.user._id;
   clothingItems.findById({ _id: owner }).then((item) => {
     if (item.userId != reqUser) {
-      return res.status(403).json({ message: "not authorized" });
+      return res.status(403).json({ message: "Not authorized" });
     } else {
       clothingItems
         .deleteOne({ _id: owner, userId: reqUser })
         .then(() => {
-          return res.status(HTTP_OK_REQUEST).json({ message: "item deleted" });
+          return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
         })
         .catch((err) => {
           console.log(err);
-          return res.status(500).json({ message: "delete item unsuccessful" });
+          return res.status(500).json({ message: "Delete item unsuccessful" });
         });
     }
   });
