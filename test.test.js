@@ -262,3 +262,29 @@ app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
 // } catch {
 //   console.log(error);
 // }
+
+const deleteClothingItem = async (req, res) => {
+  try {
+    // Pull the ID from the params
+    const { id } = req.params;
+
+    // Search for the item by ID
+    const item = await clothingItems.findById(id).orFail();
+
+    // Compare the item's owner to the current user's ID
+    if (!item.owner.equals(req.user._id)) {
+      // Forbidden
+      return res.status(403).send("Forbidden");
+    }
+
+    // If not forbidden, delete the item
+    await ClothingItem.deleteOne(item);
+
+    // Handle success response
+    res.status(200).send("Item deleted successfully");
+  } catch (err) {
+    // Handle errors
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+};

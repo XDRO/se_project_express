@@ -48,50 +48,63 @@ module.exports.getItems = (req, res, next) => {
     });
 };
 
-module.exports.deleteItem = async (req, res, next) => {
-  try {
-    const clothingItem = require("../models/clothingItem");
-    const { itemId } = req.params;
-    const user = req.user._id;
-    const userIdObjectId = mongoose.Types.ObjectId(user);
-    const item = await clothingItem.find({
-      _id: itemId,
-      owner: userIdObjectId,
-      // { _id: clothingItem, owner }
+// module.exports.deleteItem = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const item = await clothingItems.findById(id).orFail();
+//     console.log({ item });
+
+//     if (!item.owner.equals(req.user._id)) {
+//       return res.status(403).send("Permission not granted");
+//     }
+
+//     await clothingItems.deleteOne(item);
+
+//     res.status(200).send("Item deleted successfully");
+//   } catch (e) {
+//     next(e);
+//   }
+// };
+
+module.exports.deleteItem = (req, res, next) => {
+  // Pull the ID from the params
+  const { id } = req.params;
+
+  // Search for the item by ID
+  clothingItems
+    .findById(id)
+    .orFail() // if no such item is found, an error will be thrown
+    .then((item) => {
+      // here is where you need to compare the item's owner to the current user's ID
+      // item.owner already is an ObjectID. req.user._id is a string, and that's fine
+      if (!item.owner.equals(req.user._id)) {
+        // forbidden
+        return res.status(403).json({ message: "forbidden" });
+      } else {
+        // if not forbidden, then we can delete the request
+        clothingItems.deleteOne(item).then((item) => {
+          return res.status(HTTP_OK_REQUEST).send({ item });
+        });
+        // .catch((e) => {});
+      }
+    })
+    .catch((e) => {
+      // handle errors
+      if (e instanceof mongoose.CastError) {
+        const castError = new Error(e.message);
+        castError.statusCode = HTTP_BAD_REQUEST;
+        next(castError);
+      } else {
+        next(e);
+      }
     });
-    // console.log({ user });
-    console.log({ item });
-
-    if (!item) {
-      return res.status(HTTP_NOT_FOUND).json({ error: "Item not found" });
-    }
-
-    if (item.owner.toString() != user.toString()) {
-      console.log({ owner });
-      console.log(req.user._id);
-      const error = new Error("Permission not granted");
-      error.statusCode = HTTP_FORBIDDEN;
-      throw error;
-    }
-
-    const responseData = {
-      owner: item.owner._id,
-    };
-
-    // console.log(responseData);
-    res.send(responseData);
-  } catch (e) {
-    next(e);
-  }
 };
 
 // module.exports.deleteItem = (req, res, next) => {
-//   const { itemId } = req.params;
-//   const owner = itemId.equals(clothingItems.owner);
-//   // someObjectId.equals(someStringOrObjectId)
 //   const userId = req.user._id;
-//   // req.user.userId._id
+
 //   const userIdObjectId = mongoose.Types.ObjectId(userId);
+
 //   clothingItems
 //     .find({ _id: itemId, owner: userIdObjectId })
 //     // .findByIdAndDelete(itemId)
