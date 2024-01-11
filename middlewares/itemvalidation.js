@@ -1,9 +1,10 @@
-const { HTTP_BAD_REQUEST } = require("../utils/error");
+const clothingItem = require("../models/clothingItem");
+const { HTTP_BAD_REQUEST, HTTP_FORBIDDEN } = require("../utils/error");
 // const clothingItems = require("../models/clothingItem");
 const { default: isURL } = require("validator/lib/isURL");
 module.exports = async (req, res, next) => {
   try {
-    const { name, weather, imageUrl } = req.body;
+    const { name, weather, imageUrl, owner } = req.body;
     if (!name || name.length < 2 || name.length > 30) {
       const error = new Error("Name is an incorrect length or field is empty");
       error.statusCode = HTTP_BAD_REQUEST;
