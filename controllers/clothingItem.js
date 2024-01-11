@@ -85,7 +85,6 @@ module.exports.deleteItem = (req, res, next) => {
         clothingItems.deleteOne(item).then((item) => {
           return res.status(HTTP_OK_REQUEST).send({ item });
         });
-        // .catch((e) => {});
       }
     })
     .catch((e) => {
