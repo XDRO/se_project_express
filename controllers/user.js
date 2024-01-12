@@ -54,16 +54,16 @@ const updateUser = async (req, res, next) => {
       .orFail();
 
     res.status(HTTP_OK_REQUEST).send({ data: userData });
-  } catch (error) {
-    if (error.name === "ValidationError") {
+  } catch (e) {
+    if (e.name === "ValidationError") {
       return res.status(HTTP_BAD_REQUEST).json({ message: "Validation error" });
-    } else {
-      next(error);
     }
+    next(e);
+    return;
   }
 };
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
 
@@ -77,11 +77,10 @@ const getCurrentUser = async (req, res) => {
     const userResponse = { id: _id, name, avatar, email };
 
     res.json(userResponse);
-  } catch (error) {
-    res
-      .status(HTTP_INTERNAL_SERVER_ERROR)
-      .json({ error: "Internal server error" });
+  } catch (e) {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).json({ e: "Internal server error" });
   }
+  return;
 };
 
 const login = async (req, res, next) => {
@@ -95,12 +94,12 @@ const login = async (req, res, next) => {
     });
 
     res.send({ token });
-  } catch (error) {
-    if (error.name === "INVALID_EMAIL_PASSWORD") {
-      return res.status(HTTP_BAD_REQUEST).send({ message: error.message });
-    } else {
-      next(error);
+  } catch (e) {
+    if (e.name === "INVALID_EMAIL_PASSWORD") {
+      return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
     }
+    next(e);
+    return;
   }
 };
 
