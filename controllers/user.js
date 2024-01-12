@@ -105,7 +105,7 @@ const login = (req, res, next) => {
       if (e.name === "INVALID_EMAIL_PASSWORD") {
         return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
       } else {
-        res.status(HTTP_UNAUTHORIZED).send({ message: e.message });
+        next(e);
       }
     });
 };
