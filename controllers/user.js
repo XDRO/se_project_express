@@ -49,7 +49,11 @@ const updateUser = (req, res) => {
   console.log(userId);
   const { name, avatar } = req.body;
   user
-    .findByIdAndUpdate(userId, { $set: { name, avatar } }, { new: true })
+    .findByIdAndUpdate(
+      userId,
+      { $set: { name, avatar } },
+      { new: true, runValidators: true },
+    )
     .orFail()
     .then((user) => res.status(HTTP_OK_REQUEST).send({ data: user }))
     .catch((e) => {

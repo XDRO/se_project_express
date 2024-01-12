@@ -55,13 +55,16 @@ module.exports.deleteItem = (req, res) => {
   const reqUser = req.user._id;
   clothingItems.findById({ _id: itemId }).then((item) => {
     if (item === null) {
-      return res.status(401).json({ message: "item does not exist" });
+      return res
+        .status(HTTP_NOT_FOUND)
+        .json({ message: "item does not exist" });
     }
-    if (item.userId != reqUser) {
-      return res.status(403).json({ message: "Not authorized" });
-    } else {
+    // still need to work on this below
+    if (item.owner.toString() != reqUser.toString()) {
+      return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+    } else if (item) {
       clothingItems
-        .deleteOne({ _id: itemId, userId: reqUser })
+        .deleteOne({ _id: itemId })
         .then(() => {
           return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
         })
@@ -69,6 +72,8 @@ module.exports.deleteItem = (req, res) => {
           console.log(err);
           return res.status(500).json({ message: "Delete item unsuccessful" });
         });
+    } else if (e.name === "CastError") {
+      return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
     }
   });
 };
