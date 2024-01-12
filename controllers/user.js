@@ -14,7 +14,7 @@ const {
 
 const { JWT_SECRET } = require("../utils/config");
 
-const createUser = async (req, res, next) => {
+module.exports.createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
@@ -40,7 +40,7 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const updateUser = async (req, res, next) => {
+module.exports.updateUser = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { name, avatar } = req.body;
@@ -60,10 +60,10 @@ const updateUser = async (req, res, next) => {
     }
     next(e);
   }
-  return updateUser;
+  return undefined;
 };
 
-const getCurrentUser = async (req, res, next) => {
+module.exports.getCurrentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
 
@@ -81,10 +81,10 @@ const getCurrentUser = async (req, res, next) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ e: "Internal server error" });
     next(e);
   }
-  return getCurrentUser;
+  return undefined;
 };
 
-const login = async (req, res, next) => {
+module.exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -101,7 +101,7 @@ const login = async (req, res, next) => {
     }
     next(e);
   }
-  return login;
+  return undefined;
 };
 
-module.exports = { createUser, getCurrentUser, updateUser, login };
+// module.exports = { createUser, getCurrentUser, updateUser, login };

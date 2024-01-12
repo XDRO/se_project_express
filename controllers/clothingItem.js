@@ -37,13 +37,13 @@ module.exports.createItem = async (req, res, next) => {
   }
 };
 
-module.exports.getItems = (req, res, next) => {
-  clothingItems
-    .find({})
-    .then((items) => res.status(200).send(items))
-    .catch((e) => {
-      next(e);
-    });
+module.exports.getItems = async (req, res, next) => {
+  try {
+    const items = await clothingItems.find({});
+    res.status(200).send(items);
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports.deleteItem = async (req, res) => {
