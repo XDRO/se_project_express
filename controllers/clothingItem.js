@@ -46,40 +46,35 @@ module.exports.getItems = (req, res, next) => {
     });
 };
 
-module.exports.deleteItem = (req, res) => {
-  const { itemId } = req.params;
-  const reqUser = req.user._id;
-  clothingItems
-    .findById({ _id: itemId })
-    .then((item) => {
-      if (item === null) {
-        return res
-          .status(HTTP_NOT_FOUND)
-          .json({ message: "Item does not exist" });
-      }
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const reqUser = req.user._id;
 
-      if (item.owner.toString() !== reqUser.toString()) {
-        return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
-      } else {
-        clothingItems
-          .deleteOne({ _id: itemId })
-          .then(() => {
-            return res
-              .status(HTTP_OK_REQUEST)
-              .json({ message: "Item deleted" });
-          })
-          .catch(() => {
-            return res
-              .status(HTTP_INTERNAL_SERVER_ERROR)
-              .json({ message: "Delete item unsuccessful" });
-          });
-      }
-    })
-    .catch((e) => {
-      if (e.name === "CastError") {
-        return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
-      }
-    });
+    const item = await clothingItems.findById({ _id: itemId });
+
+    if (item === null) {
+      return res
+        .status(HTTP_NOT_FOUND)
+        .json({ message: "Item does not exist" });
+    }
+
+    if (item.owner.toString() !== reqUser.toString()) {
+      return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+    }
+
+    await clothingItems.deleteOne({ _id: itemId });
+
+    return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
+    }
+
+    return res
+      .status(HTTP_INTERNAL_SERVER_ERROR)
+      .json({ message: "Delete item unsuccessful" });
+  }
 };
 
 module.exports.likeItem = (req, res, next) => {
