@@ -13,8 +13,6 @@ module.exports.createItem = async (req, res, next) => {
     const { name, weather, imageUrl, createdAt } = req.body;
     console.log({ name, weather, imageUrl, createdAt });
     const owner = req.user._id;
-    // console.log({ owner });
-    // createdAt undefined at this point
 
     const newItem = await clothingItems.create({
       name,
