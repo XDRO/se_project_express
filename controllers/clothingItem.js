@@ -49,30 +49,37 @@ module.exports.getItems = (req, res, next) => {
 module.exports.deleteItem = (req, res) => {
   const { itemId } = req.params;
   const reqUser = req.user._id;
-  clothingItems.findById({ _id: itemId }).then((item) => {
-    if (item === null) {
-      return res
-        .status(HTTP_NOT_FOUND)
-        .json({ message: "item does not exist" });
-    }
-    // still need to work on this below
-    if (item.owner.toString() !== reqUser.toString()) {
-      return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
-    } else if (item) {
-      clothingItems
-        .deleteOne({ _id: itemId })
-        .then(() => {
-          return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
-        })
-        .catch(() => {
-          return res
-            .status(HTTP_INTERNAL_SERVER_ERROR)
-            .json({ message: "Delete item unsuccessful" });
-        });
-    } else if (e.name === "CastError") {
-      return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
-    }
-  });
+  clothingItems
+    .findById({ _id: itemId })
+    .then((item) => {
+      if (item === null) {
+        return res
+          .status(HTTP_NOT_FOUND)
+          .json({ message: "Item does not exist" });
+      }
+
+      if (item.owner.toString() !== reqUser.toString()) {
+        return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+      } else {
+        clothingItems
+          .deleteOne({ _id: itemId })
+          .then(() => {
+            return res
+              .status(HTTP_OK_REQUEST)
+              .json({ message: "Item deleted" });
+          })
+          .catch(() => {
+            return res
+              .status(HTTP_INTERNAL_SERVER_ERROR)
+              .json({ message: "Delete item unsuccessful" });
+          });
+      }
+    })
+    .catch((e) => {
+      if (e.name === "CastError") {
+        return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
+      }
+    });
 };
 
 module.exports.likeItem = (req, res, next) => {

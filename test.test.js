@@ -1,85 +1,85 @@
-// this is a rough hypothesis of what I'll need to do inside of my patch request
-// my goal is to seprate this into a controller and a route
-application.patch("/users/me/:id", (req, res) => {
-  let userId = req.params.userId; // change req object to whatever is needed, * 1
-  let userUpdate = user.find((el) => el.userId === userId); // instead of userId he just uses id
-  let index = user.indexOf(userUpdate);
+// // this is a rough hypothesis of what I'll need to do inside of my patch request
+// // my goal is to seprate this into a controller and a route
+// application.patch("/users/me/:id", (req, res) => {
+//   let userId = req.params.userId; // change req object to whatever is needed, * 1
+//   let userUpdate = user.find((el) => el.userId === userId); // instead of userId he just uses id
+//   let index = user.indexOf(userUpdate);
 
-  Object.assign(userUpdate, req.body);
+//   Object.assign(userUpdate, req.body);
 
-  users[index] = userUpdate;
+//   users[index] = userUpdate;
 
-  FileSystem.writeFile("/user/me.json", JSON.stringify(movies), (err) => {
-    // unsure whether or not this is the correct path
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: userUpdate,
-      },
-    });
-  }); // FileSystem is called fs in youtube video
-}); //possibly add this id property
+//   FileSystem.writeFile("/user/me.json", JSON.stringify(movies), (err) => {
+//     // unsure whether or not this is the correct path
+//     res.status(200).json({
+//       status: "success",
+//       data: {
+//         user: userUpdate,
+//       },
+//     });
+//   }); // FileSystem is called fs in youtube video
+// }); //possibly add this id property
 
-// Here below is the exact code written in the video
-app.patch("/api/v1/movies/:id", (req, res) => {
-  let id = req.params.id * 1;
-  let movieToUpdate = movies.find((el) => el.id === id);
-  // error handling
-  if (!movieToUpdate) {
-    return res.status(404).json({
-      status: "fail",
-      message: "No movie object with ID" + id + "is found",
-    });
-  }
-  let index = movies.indexOf(movieToUpdate);
-  // you can use a spread operator, look into what that is, instead of Object.assign
-  Object.assign(movieToUpdate, req.body);
+// // Here below is the exact code written in the video
+// app.patch("/api/v1/movies/:id", (req, res) => {
+//   let id = req.params.id * 1;
+//   let movieToUpdate = movies.find((el) => el.id === id);
+//   // error handling
+//   if (!movieToUpdate) {
+//     return res.status(404).json({
+//       status: "fail",
+//       message: "No movie object with ID" + id + "is found",
+//     });
+//   }
+//   let index = movies.indexOf(movieToUpdate);
+//   // you can use a spread operator, look into what that is, instead of Object.assign
+//   Object.assign(movieToUpdate, req.body);
 
-  movies[index] = moviesToUpdate;
-  // Just to remember 201 request is creating something successfully
-  fs.writeFile("./data/movies.json", JSON.stringify(movies), (err) => {
-    res.status(200).json({ status: "success", data: { movie: movieToUpdate } });
-  });
-});
+//   movies[index] = moviesToUpdate;
+//   // Just to remember 201 request is creating something successfully
+//   fs.writeFile("./data/movies.json", JSON.stringify(movies), (err) => {
+//     res.status(200).json({ status: "success", data: { movie: movieToUpdate } });
+//   });
+// });
 
-// previous code for update user controller
-const updateUser = (req, res) => {
-  const { userId } = req.params;
-  const { avatar } = req.body;
-  const { name } = req.body;
+// // previous code for update user controller
+// const updateUser = (req, res) => {
+//   const { userId } = req.params;
+//   const { avatar } = req.body;
+//   const { name } = req.body;
 
-  user
-    .findByIdAndUpdate(userId, { $set: { avatar } }, { new: true })
-    .orFail()
-    .then((user) => res.status(200).send({ data: user }))
-    .catch((e) => {
-      res.status(500).send({ message: "Error from update user", e });
-    });
-};
+//   user
+//     .findByIdAndUpdate(userId, { $set: { avatar } }, { new: true })
+//     .orFail()
+//     .then((user) => res.status(200).send({ data: user }))
+//     .catch((e) => {
+//       res.status(500).send({ message: "Error from update user", e });
+//     });
+// };
 
-// working on currently
-app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
-  const userId = req.user._id;
-  console.log(userId);
-  const user = users.find((el) => el.id == userId);
+// // working on currently
+// app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
+//   const userId = req.user._id;
+//   console.log(userId);
+//   const user = users.find((el) => el.id == userId);
 
-  if (!user) {
-    return res.status(404).json({
-      status: "fail",
-      message: "No user object with ID" + userId + "is found ",
-    });
-  }
-  const userIndex = users.indexof(user);
+//   if (!user) {
+//     return res.status(404).json({
+//       status: "fail",
+//       message: "No user object with ID" + userId + "is found ",
+//     });
+//   }
+//   const userIndex = users.indexof(user);
 
-  Object.assign(user, req.params);
+//   Object.assign(user, req.params);
 
-  users[userIndex] = user;
+//   users[userIndex] = user;
 
-  FileSystem.writeFile("/users/me.json", JSON.stringify(users), (err) => {
-    res.status(200).json({ status: "success", data: { user: user } });
-  });
-  next();
-});
+//   FileSystem.writeFile("/users/me.json", JSON.stringify(users), (err) => {
+//     res.status(200).json({ status: "success", data: { user: user } });
+//   });
+//   next();
+// });
 
 // const path = require("path");
 // const express = require("express");
@@ -262,49 +262,49 @@ app.use("/users/me", auth, require("./routes/index"), (req, res, next) => {
 // } catch {
 //   console.log(error);
 // }
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema(
-  {
-    _id: mongoose.Schema.Types.ObjectId,
-    userId: mongoose.Schema.Types.ObjectId,
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    productImage: { type: String, required: false },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
-    gender: { type: String, required: true },
-  },
-  { timestamps: { createdAt: "created_at" } },
-);
+// const productSchema = mongoose.Schema(
+//   {
+//     _id: mongoose.Schema.Types.ObjectId,
+//     userId: mongoose.Schema.Types.ObjectId,
+//     name: { type: String, required: true },
+//     price: { type: Number, required: true },
+//     productImage: { type: String, required: false },
+//     category: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "Category",
+//       required: true,
+//     },
+//     gender: { type: String, required: true },
+//   },
+//   { timestamps: { createdAt: "created_at" } },
+// );
 
-module.exports = mongoose.model("Product", productSchema);
+// module.exports = mongoose.model("Product", productSchema);
 
-const deleteProduct = (req, res) => {
-  const id = req.params.productId;
-  Product.findById({ _id: id }).then((product) => {
-    if (product.userId != req.user._id) {
-      return res.status(401).json("Not authorized");
-    } else {
-      Product.deleteOne({ _id: id })
-        .exec()
-        .then(() => {
-          return res.status(200).json({
-            message: "Product deleted succesfully",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).json({
-            error: err,
-          });
-        });
-    }
-  });
-};
+// const deleteProduct = (req, res) => {
+//   const id = req.params.productId;
+//   Product.findById({ _id: id }).then((product) => {
+//     if (product.userId != req.user._id) {
+//       return res.status(401).json("Not authorized");
+//     } else {
+//       Product.deleteOne({ _id: id })
+//         .exec()
+//         .then(() => {
+//           return res.status(200).json({
+//             message: "Product deleted succesfully",
+//           });
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//           return res.status(500).json({
+//             error: err,
+//           });
+//         });
+//     }
+//   });
+// };
 // tutor code below
 // module.exports.deleteItem = (req, res, next) => {
 //   // Pull the ID from the params
@@ -406,6 +406,71 @@ const deleteProduct = (req, res) => {
 //     } else if (itemId != reqUser) {
 //       console.log({ itemId, reqUser });
 //       return res.status(403).json({ message: "Not authorized" });
+//     }
+//   });
+// };
+
+// module.exports.deleteItem = (req, res) => {
+//   const { itemId } = req.params;
+//   const reqUser = req.user._id;
+//   clothingItems
+//     .findById({ _id: itemId })
+//     .then((item) => {
+//       if (item === null) {
+//         return res
+//           .status(HTTP_NOT_FOUND)
+//           .json({ message: "Item does not exist" });
+//       }
+
+//       if (item.owner.toString() !== reqUser.toString()) {
+//         return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+//       } else {
+//         clothingItems
+//           .deleteOne({ _id: itemId })
+//           .then(() => {
+//             return res
+//               .status(HTTP_OK_REQUEST)
+//               .json({ message: "Item deleted" });
+//           })
+//           .catch(() => {
+//             return res
+//               .status(HTTP_INTERNAL_SERVER_ERROR)
+//               .json({ message: "Delete item unsuccessful" });
+//           });
+//       }
+//     })
+//     .catch((e) => {
+//       if (e.name === "CastError") {
+//         return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
+//       }
+//     });
+// };
+// // old code
+// module.exports.deleteItem = (req, res) => {
+//   const { itemId } = req.params;
+//   const reqUser = req.user._id;
+//   clothingItems.findById({ _id: itemId }).then((item) => {
+//     if (item === null) {
+//       return res
+//         .status(HTTP_NOT_FOUND)
+//         .json({ message: "item does not exist" });
+//     }
+//     // still need to work on this below
+//     if (item.owner.toString() !== reqUser.toString()) {
+//       return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+//     } else if (item) {
+//       clothingItems
+//         .deleteOne({ _id: itemId })
+//         .then(() => {
+//           return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
+//         })
+//         .catch(() => {
+//           return res
+//             .status(HTTP_INTERNAL_SERVER_ERROR)
+//             .json({ message: "Delete item unsuccessful" });
+//         });
+//     } else if (e.name === "CastError") {
+//       return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
 //     }
 //   });
 // };
