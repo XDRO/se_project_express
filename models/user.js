@@ -46,14 +46,12 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
         error.name = "INVALID_EMAIL_PASSWORD";
         return Promise.reject(error);
       }
-      console.log(password);
       if (!password || !email) {
         const error = new Error("incorrect email or password");
         error.name = "INVALID_EMAIL_PASSWORD";
         return Promise.reject(error);
       }
       // found
-      console.log(password, user.password);
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           const error = new Error("email or password didn't match");
