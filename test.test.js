@@ -474,3 +474,69 @@
 //     }
 //   });
 // };
+
+// old code
+// const getCurrentUser = (req, res) => {
+//   const id = req.user._id;
+//   user
+//     .findById(id)
+//     .orFail()
+//     .then((userData) => {
+//       if (!userData) {
+//         return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
+//       }
+//       const { id, name, avatar, email } = userData;
+//       const userResponse = { id, name, avatar, email };
+
+//       res.json(userResponse);
+//       // console.log(userResponse);
+//     })
+//     .catch(() => {
+//       res
+//         .status(HTTP_INTERNAL_SERVER_ERROR)
+//         .json({ error: "Internal server error" });
+//     });
+// };
+
+// old code
+// const updateUser = (req, res, next) => {
+//   const userId = req.user._id;
+//   const { name, avatar } = req.body;
+//   user
+//     .findByIdAndUpdate(
+//       userId,
+//       { $set: { name, avatar } },
+//       { new: true, runValidators: true },
+//     )
+//     .orFail()
+//     .then((userData) => res.status(HTTP_OK_REQUEST).send({ data: userData }))
+//     .catch((e) => {
+//       if (e.name === "ValidationError") {
+//         return res
+//           .status(HTTP_BAD_REQUEST)
+//           .json({ message: "validation error" });
+//       } else {
+//         next(e);
+//       }
+//     });
+// };
+
+// old code
+// const login = (req, res, next) => {
+//   const { email, password } = req.body;
+//   return user
+//     .findUserByCredentials(email, password)
+//     .then((user) => {
+//       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+//         expiresIn: "7d",
+//       });
+//       res.send({ token });
+//     })
+//     .catch((e) => {
+//       if (e.name === "INVALID_EMAIL_PASSWORD") {
+//         return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
+//       } else {
+//         next(e);
+//       }
+//     });
+// };
