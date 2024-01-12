@@ -11,7 +11,6 @@ const clothingItems = require("../models/clothingItem");
 module.exports.createItem = async (req, res, next) => {
   try {
     const { name, weather, imageUrl, createdAt } = req.body;
-    console.log({ name, weather, imageUrl, createdAt });
     const owner = req.user._id;
 
     const newItem = await clothingItems.create({
@@ -48,8 +47,6 @@ module.exports.getItems = (req, res, next) => {
 
 module.exports.deleteItem = (req, res) => {
   const itemId = req.params.itemId;
-  console.log(req.params);
-  console.log({ itemId });
   const reqUser = req.user._id;
   clothingItems.findById({ _id: itemId }).then((item) => {
     if (item === null) {
@@ -58,7 +55,7 @@ module.exports.deleteItem = (req, res) => {
         .json({ message: "item does not exist" });
     }
     // still need to work on this below
-    if (item.owner.toString() != reqUser.toString()) {
+    if (item.owner.toString() !== reqUser.toString()) {
       return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
     } else if (item) {
       clothingItems

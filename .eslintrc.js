@@ -22,3 +22,6 @@ module.exports = {
   },
   rules: { "no-underscore-dangle": "off" },
 };
+
+// run command to see eslint errors
+// npx eslint ./
