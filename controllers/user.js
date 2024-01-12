@@ -59,8 +59,8 @@ const updateUser = async (req, res, next) => {
       return res.status(HTTP_BAD_REQUEST).json({ message: "Validation error" });
     }
     next(e);
-    return;
   }
+  return updateUser;
 };
 
 const getCurrentUser = async (req, res, next) => {
@@ -79,8 +79,9 @@ const getCurrentUser = async (req, res, next) => {
     res.json(userResponse);
   } catch (e) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ e: "Internal server error" });
+    next(e);
   }
-  return;
+  return getCurrentUser;
 };
 
 const login = async (req, res, next) => {
@@ -99,8 +100,8 @@ const login = async (req, res, next) => {
       return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
     }
     next(e);
-    return;
   }
+  return login;
 };
 
 module.exports = { createUser, getCurrentUser, updateUser, login };
