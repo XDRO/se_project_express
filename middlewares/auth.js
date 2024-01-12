@@ -7,7 +7,7 @@ const handleAuthError = (res, message) =>
     .status(HTTP_UNAUTHORIZED)
     .send({ message: message || "Authorization Error" });
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
@@ -22,6 +22,8 @@ module.exports = (req, res, next) => {
   } catch {
     return handleAuthError(res, "Invalid token");
   }
+
   next();
-  return module.exports;
+
+  return undefined;
 };
