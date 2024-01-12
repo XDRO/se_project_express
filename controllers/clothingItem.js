@@ -50,8 +50,10 @@ module.exports.deleteItem = async (req, res) => {
   try {
     const { itemId } = req.params;
     const reqUser = req.user._id;
-
     const item = await clothingItems.findById({ _id: itemId });
+    const owner = item.owner;
+    console.log({ owner });
+    console.log({ reqUser });
 
     if (item === null) {
       return res
@@ -59,7 +61,7 @@ module.exports.deleteItem = async (req, res) => {
         .json({ message: "Item does not exist" });
     }
 
-    if (item.owner.toString() !== reqUser.toString()) {
+    if (!owner.equals(reqUser)) {
       return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
     }
 
