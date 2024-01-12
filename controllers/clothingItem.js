@@ -49,11 +49,11 @@ module.exports.getItems = (req, res, next) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  const owner = req.params.itemId;
+  const itemId = req.params.itemId;
   console.log(req.params);
-  console.log({ owner });
+  console.log({ itemId });
   const reqUser = req.user._id;
-  clothingItems.findById({ _id: owner }).then((item) => {
+  clothingItems.findById({ _id: itemId }).then((item) => {
     if (item === null) {
       return res.status(401).json({ message: "item does not exist" });
     }
@@ -61,7 +61,7 @@ module.exports.deleteItem = (req, res) => {
       return res.status(403).json({ message: "Not authorized" });
     } else {
       clothingItems
-        .deleteOne({ _id: owner, userId: reqUser })
+        .deleteOne({ _id: itemId, userId: reqUser })
         .then(() => {
           return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
         })
