@@ -50,9 +50,13 @@ module.exports.getItems = (req, res, next) => {
 
 module.exports.deleteItem = (req, res) => {
   const owner = req.params.itemId;
+  console.log(req.params);
   console.log({ owner });
   const reqUser = req.user._id;
   clothingItems.findById({ _id: owner }).then((item) => {
+    if (item === null) {
+      return res.status(401).json({ message: "item does not exist" });
+    }
     if (item.userId != reqUser) {
       return res.status(403).json({ message: "Not authorized" });
     } else {
