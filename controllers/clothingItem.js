@@ -5,6 +5,7 @@ const {
   HTTP_NOT_FOUND,
   HTTP_OK_REQUEST,
   HTTP_FORBIDDEN,
+  HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/error");
 const clothingItems = require("../models/clothingItem");
 
@@ -63,9 +64,10 @@ module.exports.deleteItem = (req, res) => {
         .then(() => {
           return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
         })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).json({ message: "Delete item unsuccessful" });
+        .catch(() => {
+          return res
+            .status(HTTP_INTERNAL_SERVER_ERROR)
+            .json({ message: "Delete item unsuccessful" });
         });
     } else if (e.name === "CastError") {
       return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
@@ -75,7 +77,6 @@ module.exports.deleteItem = (req, res) => {
 
 module.exports.likeItem = (req, res, next) => {
   const itemId = req.params.itemId;
-  console.log({ itemId });
   clothingItems
     .findByIdAndUpdate(
       itemId,
@@ -100,7 +101,7 @@ module.exports.likeItem = (req, res, next) => {
 };
 
 module.exports.dislikeItem = (req, res, next) => {
-  const itemId = req.params.itemId;
+  const { itemId } = req.params;
   clothingItems
     .findByIdAndUpdate(
       itemId,
