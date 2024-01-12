@@ -5,7 +5,12 @@ const { default: isURL } = require("validator/lib/isURL");
 module.exports = async (req, res, next) => {
   try {
     const { name, avatar, email } = req.body;
-
+    // const e = new Error("ValidationError");
+    // if (e.name === "ValidationError") {
+    //   const error = new Error("Validation error");
+    //   error.statusCode = HTTP_BAD_REQUEST;
+    //   throw error;
+    // }
     if (!name || name.length < 2 || name.length > 30) {
       const error = new Error("Name is an incorrect length or field is empty");
       error.statusCode = HTTP_BAD_REQUEST;

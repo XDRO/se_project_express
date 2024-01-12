@@ -44,7 +44,7 @@ const createUser = async (req, res, next) => {
 // this will help clean up the code, as well as only needing the validation for users
 // update user controller
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const userId = req.user._id;
   console.log(userId);
   const { name, avatar } = req.body;
@@ -57,13 +57,16 @@ const updateUser = (req, res) => {
     .orFail()
     .then((user) => res.status(HTTP_OK_REQUEST).send({ data: user }))
     .catch((e) => {
-      res
-        .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ message: "Error from update user", e });
+      if (e.name === "ValidationError") {
+        return res
+          .status(HTTP_BAD_REQUEST)
+          .json({ message: "validation error" });
+      } else {
+        next(e);
+      }
     });
 };
 
-// edit this function
 const getCurrentUser = (req, res) => {
   const id = req.user._id;
   user
