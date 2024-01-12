@@ -27,7 +27,9 @@ const clothingItem = new mongoose.Schema({
     required: true,
   },
   createdAt: {
-    required: Date,
+    type: String,
+    required: true,
+    default: Date.now,
   },
   likes: [
     {
