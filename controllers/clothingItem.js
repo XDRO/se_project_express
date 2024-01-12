@@ -77,52 +77,58 @@ module.exports.deleteItem = async (req, res) => {
   }
 };
 
-module.exports.likeItem = (req, res, next) => {
+module.exports.likeItem = async (req, res, next) => {
   const { itemId } = req.params;
-  clothingItems
-    .findByIdAndUpdate(
-      itemId,
-      { $addToSet: { likes: req.user._id } },
-      { new: true },
-    )
-    .orFail()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      if (e instanceof mongoose.CastError) {
-        const castError = new Error(e.message);
-        castError.statusCode = HTTP_BAD_REQUEST;
-        next(castError);
-      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
-        const notFoundError = new Error(e.message);
-        notFoundError.statusCode = HTTP_NOT_FOUND;
-        next(notFoundError);
-      } else {
-        next(e);
-      }
-    });
+
+  try {
+    const item = await clothingItems
+      .findByIdAndUpdate(
+        itemId,
+        { $addToSet: { likes: req.user._id } },
+        { new: true },
+      )
+      .orFail();
+
+    res.status(200).send({ data: item });
+  } catch (e) {
+    if (e instanceof mongoose.CastError) {
+      const castError = new Error(e.message);
+      castError.statusCode = HTTP_BAD_REQUEST;
+      next(castError);
+    } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+      const notFoundError = new Error(e.message);
+      notFoundError.statusCode = HTTP_NOT_FOUND;
+      next(notFoundError);
+    } else {
+      next(e);
+    }
+  }
 };
 
-module.exports.dislikeItem = (req, res, next) => {
+module.exports.dislikeItem = async (req, res, next) => {
   const { itemId } = req.params;
-  clothingItems
-    .findByIdAndUpdate(
-      itemId,
-      { $pull: { likes: req.user._id } },
-      { new: true },
-    )
-    .orFail()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      if (e instanceof mongoose.CastError) {
-        const castError = new Error(e.message);
-        castError.statusCode = HTTP_BAD_REQUEST;
-        next(castError);
-      } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
-        const notFoundError = new Error(e.message);
-        notFoundError.statusCode = HTTP_NOT_FOUND;
-        next(notFoundError);
-      } else {
-        next(e);
-      }
-    });
+
+  try {
+    const item = await clothingItems
+      .findByIdAndUpdate(
+        itemId,
+        { $pull: { likes: req.user._id } },
+        { new: true },
+      )
+      .orFail();
+
+    res.status(200).send({ data: item });
+  } catch (e) {
+    if (e instanceof mongoose.CastError) {
+      const castError = new Error(e.message);
+      castError.statusCode = HTTP_BAD_REQUEST;
+      next(castError);
+    } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+      const notFoundError = new Error(e.message);
+      notFoundError.statusCode = HTTP_NOT_FOUND;
+      next(notFoundError);
+    } else {
+      next(e);
+    }
+  }
 };
