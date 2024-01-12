@@ -47,7 +47,7 @@ module.exports.getItems = (req, res, next) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  const itemId = req.params.itemId;
+  const { itemId } = req.params;
   const reqUser = req.user._id;
   clothingItems.findById({ _id: itemId }).then((item) => {
     if (item === null) {
