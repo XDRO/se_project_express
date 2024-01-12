@@ -76,7 +76,7 @@ module.exports.deleteItem = (req, res) => {
 };
 
 module.exports.likeItem = (req, res, next) => {
-  const itemId = req.params.itemId;
+  const { itemId } = req.params;
   clothingItems
     .findByIdAndUpdate(
       itemId,
