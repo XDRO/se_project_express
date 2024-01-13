@@ -75,12 +75,10 @@ module.exports.getCurrentUser = async (req, res, next) => {
     const { _id, name, avatar, email } = userData;
     const userResponse = { id: _id, name, avatar, email };
 
-    res.json(userResponse);
+    return res.json(userResponse);
   } catch (e) {
-    next(e);
+    return next(e);
   }
-  // could be improved
-  return undefined;
 };
 
 module.exports.login = async (req, res, next) => {
