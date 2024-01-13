@@ -58,7 +58,7 @@ module.exports.deleteItem = async (req, res) => {
         .json({ message: "Item does not exist" });
     }
 
-    const owner = item.owner;
+    const { owner } = item;
 
     if (!owner.equals(reqUser)) {
       return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
