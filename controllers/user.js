@@ -91,13 +91,11 @@ module.exports.login = async (req, res, next) => {
       expiresIn: "7d",
     });
 
-    res.send({ token });
+    return res.send({ token });
   } catch (e) {
     if (e.name === "INVALID_EMAIL_PASSWORD") {
       return res.status(HTTP_UNAUTHORIZED).send({ message: e.message });
     }
-    next(e);
+    return next(e);
   }
-  // could be improved
-  return undefined;
 };
