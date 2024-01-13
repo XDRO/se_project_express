@@ -34,9 +34,9 @@ module.exports.createUser = async (req, res, next) => {
       },
     };
 
-    res.send(responseData);
+    return res.send(responseData);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 
