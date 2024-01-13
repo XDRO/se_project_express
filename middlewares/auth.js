@@ -23,7 +23,5 @@ module.exports = async (req, res, next) => {
     return handleAuthError(res, "Invalid token");
   }
 
-  next();
-  // could be improved
-  return undefined;
+  return next();
 };
