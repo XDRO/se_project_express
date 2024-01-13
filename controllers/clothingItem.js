@@ -118,18 +118,18 @@ module.exports.dislikeItem = async (req, res, next) => {
       )
       .orFail();
 
-    res.status(200).send({ data: item });
+    return res.status(200).send({ data: item });
   } catch (e) {
     if (e instanceof mongoose.CastError) {
       const castError = new Error(e.message);
       castError.statusCode = HTTP_BAD_REQUEST;
-      next(castError);
-    } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+      return next(castError);
+    }
+    if (e instanceof mongoose.Error.DocumentNotFoundError) {
       const notFoundError = new Error(e.message);
       notFoundError.statusCode = HTTP_NOT_FOUND;
       next(notFoundError);
-    } else {
-      next(e);
     }
+    return next(e);
   }
 };
