@@ -31,18 +31,18 @@ module.exports.createItem = async (req, res, next) => {
       owner: newItem.owner,
     };
 
-    res.send(responseData);
+    return res.send(responseData);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 
 module.exports.getItems = async (req, res, next) => {
   try {
     const items = await clothingItems.find({});
-    res.status(200).send(items);
+    return res.status(200).send(items);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 
@@ -90,19 +90,19 @@ module.exports.likeItem = async (req, res, next) => {
       )
       .orFail();
 
-    res.status(200).send({ data: item });
+    return res.status(200).send({ data: item });
   } catch (e) {
     if (e instanceof mongoose.CastError) {
       const castError = new Error(e.message);
       castError.statusCode = HTTP_BAD_REQUEST;
-      next(castError);
-    } else if (e instanceof mongoose.Error.DocumentNotFoundError) {
+      return next(castError);
+    }
+    if (e instanceof mongoose.Error.DocumentNotFoundError) {
       const notFoundError = new Error(e.message);
       notFoundError.statusCode = HTTP_NOT_FOUND;
-      next(notFoundError);
-    } else {
-      next(e);
+      return next(notFoundError);
     }
+    return next(e);
   }
 };
 
