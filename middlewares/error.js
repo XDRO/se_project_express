@@ -6,5 +6,6 @@ module.exports.globalErrorHandler = async (error, req, res, next) => {
   });
   next();
   // Return undefined to satisfy eslint
+  // could be improved
   return undefined;
 };

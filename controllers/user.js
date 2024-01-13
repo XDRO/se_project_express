@@ -60,6 +60,7 @@ module.exports.updateUser = async (req, res, next) => {
     }
     next(e);
   }
+  // could be improved
   return undefined;
 };
 
@@ -78,9 +79,9 @@ module.exports.getCurrentUser = async (req, res, next) => {
 
     res.json(userResponse);
   } catch (e) {
-    res.status(HTTP_INTERNAL_SERVER_ERROR).json({ e: "Internal server error" });
     next(e);
   }
+  // could be improved
   return undefined;
 };
 
@@ -101,6 +102,7 @@ module.exports.login = async (req, res, next) => {
     }
     next(e);
   }
+  // could be improved
   return undefined;
 };
 

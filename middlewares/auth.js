@@ -24,6 +24,6 @@ module.exports = async (req, res, next) => {
   }
 
   next();
-
+  // could be improved
   return undefined;
 };
