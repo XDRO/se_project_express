@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const user = require("../models/user");
 
-// will remove this after async await refactor of all functions
+// will remove this when I create global error handling for all errors
 const {
   HTTP_NOT_FOUND,
-  HTTP_INTERNAL_SERVER_ERROR,
+  HTTP_UNAUTHORIZED,
   HTTP_OK_REQUEST,
   HTTP_BAD_REQUEST,
 } = require("../utils/error");
@@ -98,12 +98,10 @@ module.exports.login = async (req, res, next) => {
     res.send({ token });
   } catch (e) {
     if (e.name === "INVALID_EMAIL_PASSWORD") {
-      return res.status(HTTP_BAD_REQUEST).send({ message: e.message });
+      return res.status(HTTP_UNAUTHORIZED).send({ message: e.message });
     }
     next(e);
   }
   // could be improved
   return undefined;
 };
-
-// module.exports = { createUser, getCurrentUser, updateUser, login };
