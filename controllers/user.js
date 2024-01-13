@@ -53,15 +53,13 @@ module.exports.updateUser = async (req, res, next) => {
       )
       .orFail();
 
-    res.status(HTTP_OK_REQUEST).send({ data: userData });
+    return res.status(HTTP_OK_REQUEST).send({ data: userData });
   } catch (e) {
     if (e.name === "ValidationError") {
       return res.status(HTTP_BAD_REQUEST).json({ message: "Validation error" });
     }
-    next(e);
+    return next(e);
   }
-  // could be improved
-  return undefined;
 };
 
 module.exports.getCurrentUser = async (req, res, next) => {
