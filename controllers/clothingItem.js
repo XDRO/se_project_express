@@ -40,9 +40,15 @@ module.exports.createItem = async (req, res, next) => {
 module.exports.getItems = async (req, res, next) => {
   try {
     const items = await clothingItems.find({});
-    return res.status(200).send(items);
-  } catch (e) {
-    return next(e);
+
+    const likedItems = items.map((item) => ({
+      ...item.toObject(),
+      isLiked: item.likes.includes(req.user._id),
+    }));
+
+    return res.status(200).send(likedItems);
+  } catch (error) {
+    return next(error);
   }
 };
 
