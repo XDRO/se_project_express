@@ -18,9 +18,8 @@ mongoose
 const routes = require("./routes");
 
 app.use(express.json());
-app.use(cors());
 
-// removed hard coded object
+app.use(cors());
 
 app.use(routes, require("./routes/index"));
 

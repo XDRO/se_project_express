@@ -7,6 +7,7 @@ const {
   HTTP_FORBIDDEN,
   HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/error");
+
 const clothingItems = require("../models/clothingItem");
 
 module.exports.createItem = async (req, res, next) => {
