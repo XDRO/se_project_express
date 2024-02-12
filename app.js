@@ -8,6 +8,8 @@ const { PORT = 3001 } = process.env;
 
 const app = express();
 
+const { errors } = require("celebrate");
+
 const { globalErrorHandler } = require("./middlewares/error");
 
 mongoose
@@ -22,6 +24,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use(routes, require("./routes/index"));
+
+app.use(errors());
 
 app.use(globalErrorHandler);
 
