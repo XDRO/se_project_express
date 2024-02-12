@@ -10,11 +10,14 @@ const {
 
 const itemValidation = require("../middlewares/itemvalidation");
 
-// const cardValidation = require("../middlewares/joivalidation");
+const {
+  validateCardBody,
+  validateId,
+} = require("../middlewares/joivalidation");
 
 const auth = require("../middlewares/auth");
 
-router.post("/", auth, itemValidation, cardValidation, createItem);
+router.post("/", auth, itemValidation, createItem);
 
 router.get("/", getItems);
 
