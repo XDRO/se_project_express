@@ -4,6 +4,9 @@ const { default: isURL } = require("validator/lib/isURL");
 
 const { HTTP_BAD_REQUEST, HTTP_CONFLICT } = require("../utils/error");
 
+const { Joi, celebrate } = require("celebrate");
+const validator = require("validator");
+
 const user = require("../models/user");
 
 module.exports = async (req, res, next) => {

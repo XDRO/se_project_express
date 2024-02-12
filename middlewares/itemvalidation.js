@@ -2,6 +2,10 @@ const { default: isURL } = require("validator/lib/isURL");
 
 const { HTTP_BAD_REQUEST } = require("../utils/error");
 
+const { Joi, celebrate } = require("celebrate");
+
+const validator = require("validator");
+
 module.exports = async (req, res, next) => {
   try {
     const { name, weather, imageUrl } = req.body;
