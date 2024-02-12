@@ -25,7 +25,11 @@ app.use(express.json());
 
 app.use(cors());
 
+app.use(requestLogger);
+
 app.use(routes, require("./routes/index"));
+
+app.use(errorLogger);
 
 app.use(errors());
 

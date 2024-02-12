@@ -2,8 +2,6 @@ const { Joi, celebrate } = require("celebrate");
 
 const validator = require("validator");
 
-const { default: isEmail } = require("validator/lib/isEmail");
-
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
