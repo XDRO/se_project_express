@@ -50,7 +50,7 @@ module.exports.validateUserInfoBody = celebrate({
     }),
   }),
 });
-// recomend for later use, for a stronger password field
+
 // .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
 module.exports.userLogin = celebrate({
   body: Joi.object().keys({
