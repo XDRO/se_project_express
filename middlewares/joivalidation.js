@@ -27,7 +27,8 @@ module.exports.validateCardBody = celebrate({
 
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
-    // ...
+    // ... IDs must be a hexadecimal value length of 24 characters.
+    id: Joi.string().hex({ prefix: true }).required(),
   }),
 });
 
@@ -46,9 +47,21 @@ module.exports.validateUserInfoBody = celebrate({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    password: Joi.string()
-      .required()
-      // .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .messages({}),
+    password: Joi.string().required().messages({
+      "string.empty": "Password field cannot be empty",
+    }),
+  }),
+});
+// recomend for later use, for a stronger password field
+// .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+module.exports.userLogin = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net"] },
+    }),
+    password: Joi.string().required().messages({
+      "string.empty": "Password field cannot be empty",
+    }),
   }),
 });
