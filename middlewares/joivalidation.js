@@ -28,7 +28,7 @@ module.exports.validateCardBody = celebrate({
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
     // ... IDs must be a hexadecimal value length of 24 characters.
-    id: Joi.string().hex({ prefix: true }).required(),
+    id: Joi.string().hex({ prefix: "optional" }).required(),
   }),
 });
 
