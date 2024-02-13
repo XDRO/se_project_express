@@ -8,8 +8,6 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItem");
 
-// const itemValidation = require("../middlewares/itemvalidation");
-
 const {
   validateCardBody,
   validateId,

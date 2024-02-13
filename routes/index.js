@@ -24,7 +24,6 @@ router.use("/signin", userLogin, login);
 router.use("/signup", validateUserInfoBody, createUser);
 router.use("/items", clothingItem);
 
-// will need authentication
 router.use("/users", auth, user);
 router.use("/users/me", auth, updateUser, getCurrentUser);
 
