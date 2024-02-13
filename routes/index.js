@@ -8,7 +8,10 @@ const { HTTP_NOT_FOUND } = require("../utils/error");
 
 const auth = require("../middlewares/auth");
 
-const userValidation = require("../middlewares/userValidation");
+const {
+  userLogin,
+  validateUserInfoBody,
+} = require("../middlewares/joivalidation");
 
 const {
   createUser,
@@ -17,8 +20,8 @@ const {
   updateUser,
 } = require("../controllers/user");
 
-router.use("/signin", login);
-router.use("/signup", userValidation, createUser);
+router.use("/signin", userLogin, login);
+router.use("/signup", validateUserInfoBody, createUser);
 router.use("/items", clothingItem);
 
 // will need authentication
