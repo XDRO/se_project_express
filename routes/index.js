@@ -20,6 +20,12 @@ const {
   updateUser,
 } = require("../controllers/user");
 
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 router.use("/signin", userLogin, login);
 router.use("/signup", validateUserInfoBody, createUser);
 router.use("/items", clothingItem);
