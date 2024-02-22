@@ -49,10 +49,10 @@ module.exports.updateUser = async (req, res, next) => {
       )
       .orFail();
 
-    return res.status(HTTP_OK_REQUEST).send({ data: userData });
+    return res.status(200).send({ data: userData });
   } catch (e) {
     if (e.name === "ValidationError") {
-      return res.status(HTTP_BAD_REQUEST).json({ message: "Validation error" });
+      return next(new HTTP_BAD_REQUEST("Validation error"));
     }
     return next(e);
   }
@@ -65,7 +65,7 @@ module.exports.getCurrentUser = async (req, res, next) => {
     const userData = await user.findById(id).orFail();
 
     if (!userData) {
-      return res.status(HTTP_NOT_FOUND).json({ error: "User not found" });
+      return next(new HTTP_NOT_FOUND("User not found"));
     }
 
     const { _id, name, avatar, email } = userData;
@@ -90,7 +90,7 @@ module.exports.login = async (req, res, next) => {
     return res.send({ token });
   } catch (e) {
     if (e.name === "INVALID_EMAIL_PASSWORD") {
-      return res.status(HTTP_UNAUTHORIZED).send({ message: e.message });
+      return next(new HTTP_UNAUTHORIZED("Invalid email or password"));
     }
     return next(e);
   }
