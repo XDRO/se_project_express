@@ -40,4 +40,4 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 
 ## Domian name:
 
-wtwr.surnet.ca
+wtwr.surfnet.ca
