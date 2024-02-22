@@ -6,7 +6,7 @@ const {
   HTTP_OK_REQUEST,
   HTTP_FORBIDDEN,
   HTTP_INTERNAL_SERVER_ERROR,
-} = require("../utils/error");
+} = require("../utils/error").default;
 
 const clothingItems = require("../models/clothingItem");
 
@@ -47,35 +47,31 @@ module.exports.getItems = async (req, res, next) => {
   }
 };
 
-module.exports.deleteItem = async (req, res) => {
+module.exports.deleteItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
     const reqUser = req.user._id;
     const item = await clothingItems.findById({ _id: itemId });
 
     if (item === null) {
-      return res
-        .status(HTTP_NOT_FOUND)
-        .json({ message: "Item does not exist" });
+      return next(new HTTP_NOT_FOUND("item not found"));
     }
 
     const { owner } = item;
 
     if (!owner.equals(reqUser)) {
-      return res.status(HTTP_FORBIDDEN).json({ message: "Not authorized" });
+      return next(new HTTP_FORBIDDEN("Not Authorized"));
     }
 
     await clothingItems.deleteOne({ _id: itemId });
 
-    return res.status(HTTP_OK_REQUEST).json({ message: "Item deleted" });
+    return res.status(200).json({ message: "Item deleted" });
   } catch (error) {
     if (error.name === "CastError") {
-      return res.status(HTTP_BAD_REQUEST).json({ message: "Cast error" });
+      return next(new HTTP_BAD_REQUEST("Cast Error"));
     }
 
-    return res
-      .status(HTTP_INTERNAL_SERVER_ERROR)
-      .json({ message: "Delete item unsuccessful" });
+    return next(new HTTP_INTERNAL_SERVER_ERROR("Delete item unsuccessful"));
   }
 };
 

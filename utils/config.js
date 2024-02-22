@@ -1,3 +1,3 @@
-const { JWT_SECRET = "dev-s^6", NODE_ENV } = process.env;
+const { JWT_SECRET, NODE_ENV } = process.env;
 
-module.exports = { JWT_SECRET, NODE_ENV };
+export default { JWT_SECRET, NODE_ENV };

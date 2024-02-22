@@ -30,11 +30,13 @@ router.use("/signin", userLogin, login);
 router.use("/signup", validateUserInfoBody, createUser);
 router.use("/items", clothingItem);
 
+// recommended to remove routes, they are not being used
 router.use("/users", auth, user);
 router.use("/users/me", auth, updateUser, getCurrentUser);
 
-router.use((req, res) => {
-  res.status(HTTP_NOT_FOUND).send({ message: "Router not found" });
+router.use((req, res, next) => {
+  // res.status(HTTP_NOT_FOUND).send({ message: "Router not found" });
+  return next(HTTP_NOT_FOUND("Router not found"));
 });
 
 module.exports = router;

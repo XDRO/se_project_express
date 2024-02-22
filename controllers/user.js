@@ -5,12 +5,8 @@ const jwt = require("jsonwebtoken");
 const user = require("../models/user");
 
 // will remove this when I create global error handling for all errors
-const {
-  HTTP_NOT_FOUND,
-  HTTP_UNAUTHORIZED,
-  HTTP_OK_REQUEST,
-  HTTP_BAD_REQUEST,
-} = require("../utils/error");
+const { HTTP_NOT_FOUND, HTTP_UNAUTHORIZED, HTTP_OK_REQUEST, HTTP_BAD_REQUEST } =
+  require("../utils/error").default;
 
 const { JWT_SECRET } = require("../utils/config");
 
