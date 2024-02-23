@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const user = require("../models/user");
 
 // will remove this when I create global error handling for all errors
-const { HTTP_NOT_FOUND, HTTP_UNAUTHORIZED, HTTP_OK_REQUEST, HTTP_BAD_REQUEST } =
+const { HttpNotFound, HttpUnauthorized, HttpBadRequest } =
   require("../utils/error").default;
 
 const { JWT_SECRET } = require("../utils/config");
@@ -52,7 +52,7 @@ module.exports.updateUser = async (req, res, next) => {
     return res.status(200).send({ data: userData });
   } catch (e) {
     if (e.name === "ValidationError") {
-      return next(new HTTP_BAD_REQUEST("Validation error"));
+      return next(new HttpBadRequest("Validation error"));
     }
     return next(e);
   }
@@ -65,7 +65,7 @@ module.exports.getCurrentUser = async (req, res, next) => {
     const userData = await user.findById(id).orFail();
 
     if (!userData) {
-      return next(new HTTP_NOT_FOUND("User not found"));
+      return next(new HttpNotFound("User not found"));
     }
 
     const { _id, name, avatar, email } = userData;
@@ -90,7 +90,7 @@ module.exports.login = async (req, res, next) => {
     return res.send({ token });
   } catch (e) {
     if (e.name === "INVALID_EMAIL_PASSWORD") {
-      return next(new HTTP_UNAUTHORIZED("Invalid email or password"));
+      return next(new HttpUnauthorized("Invalid email or password"));
     }
     return next(e);
   }

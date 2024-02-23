@@ -1,7 +1,7 @@
-const { HTTP_INTERNAL_SERVER_ERROR } = require("../utils/error");
+const { HttpInternalServerError } = require("../utils/error");
 
 module.exports.globalErrorHandler = async (error, req, res, next) => {
-  res.status(error.statusCode || HTTP_INTERNAL_SERVER_ERROR).json({
+  res.status(error.statusCode || HttpInternalServerError).json({
     message: error.message,
   });
   return next();
