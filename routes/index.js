@@ -20,7 +20,7 @@ const {
   updateUser,
 } = require("../controllers/user");
 
-app.get("/crash-test", () => {
+router.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");
   }, 0);
@@ -34,10 +34,7 @@ router.use("/items", clothingItem);
 router.use("/users", auth, user);
 router.use("/users/me", auth, updateUser, getCurrentUser);
 
-router.use((req, res, next) => {
-  // res.status(HttpNotFound).send({ message: "Router not found" });
-  return next(HttpNotFound("Router not found"));
-});
+router.use((req, res, next) => next(HttpNotFound("Router not found")));
 
 module.exports = router;
 
