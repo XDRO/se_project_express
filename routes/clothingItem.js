@@ -17,14 +17,14 @@ const auth = require("../middlewares/auth");
 
 // console.log({ auth, validateCardBody, validateId, createItem });
 
-router.post("/", auth, validateCardBody, validateId, createItem);
+router.post("/", auth, validateCardBody, createItem);
 
 router.get("/", getItems);
 
-router.put("/:itemId/likes", auth, likeItem);
+router.put("/:itemId/likes", auth, validateId, likeItem);
 
-router.delete("/:itemId", auth, deleteItem);
+router.delete("/:itemId", auth, validateId, deleteItem);
 
-router.delete("/:itemId/likes", auth, dislikeItem);
+router.delete("/:itemId/likes", auth, validateId, dislikeItem);
 
 module.exports = router;
