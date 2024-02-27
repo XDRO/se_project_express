@@ -26,7 +26,7 @@ module.exports.validateCardBody = celebrate({
 
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().hex({ prefix: "optional" }),
+    itemId: Joi.string().hex({ prefix: "optional" }),
   }),
 });
 
