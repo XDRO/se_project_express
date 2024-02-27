@@ -1,12 +1,12 @@
 const router = require("express").Router();
 
-const user = require("./user");
+// const user = require("./user");
 
 const clothingItem = require("./clothingItem");
 
 const { HttpNotFound } = require("../utils/error");
 
-const auth = require("../middlewares/auth");
+// const auth = require("../middlewares/auth");
 
 const {
   userLogin,
@@ -16,8 +16,8 @@ const {
 const {
   createUser,
   login,
-  getCurrentUser,
-  updateUser,
+  // getCurrentUser,
+  // updateUser,
 } = require("../controllers/user");
 
 router.get("/crash-test", () => {
@@ -31,8 +31,8 @@ router.use("/signup", validateUserInfoBody, createUser);
 router.use("/items", clothingItem);
 
 // recommended to remove routes, they are not being used
-router.use("/users", auth, user);
-router.use("/users/me", auth, updateUser, getCurrentUser);
+// router.use("/users", auth, user);
+// router.use("/users/me", auth, updateUser, getCurrentUser);
 
 router.use((req, res, next) => next(HttpNotFound("Router not found")));
 

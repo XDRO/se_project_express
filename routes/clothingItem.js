@@ -15,8 +15,6 @@ const {
 
 const auth = require("../middlewares/auth");
 
-// console.log({ auth, validateCardBody, validateId, createItem });
-
 router.post("/", auth, validateCardBody, createItem);
 
 router.get("/", getItems);
