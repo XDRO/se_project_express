@@ -6,7 +6,7 @@ const clothingItem = require("./clothingItem");
 
 const { HttpNotFound } = require("../utils/error");
 
-// const auth = require("../middlewares/auth");
+const auth = require("../middlewares/auth");
 
 const {
   userLogin,
@@ -16,8 +16,8 @@ const {
 const {
   createUser,
   login,
-  // getCurrentUser,
-  // updateUser,
+  getCurrentUser,
+  updateUser,
 } = require("../controllers/user");
 
 router.get("/crash-test", () => {
@@ -26,13 +26,14 @@ router.get("/crash-test", () => {
   }, 0);
 });
 
-router.use("/signin", userLogin, login);
-router.use("/signup", validateUserInfoBody, createUser);
+router.post("/signin", userLogin, login);
+// I believe that below would need to be post
+router.post("/signup", validateUserInfoBody, createUser);
+// since this one has been organized inside of the other routes, it shouldn't be necessary to refactor
 router.use("/items", clothingItem);
-
-// recommended to remove routes, they are not being used
-// router.use("/users", auth, user);
-// router.use("/users/me", auth, updateUser, getCurrentUser);
+// using PATCH and GET requests through the route below split them into two
+router.get("/users/me", auth, getCurrentUser);
+router.patch("/users/me", auth, updateUser);
 
 router.use((req, res, next) => next(HttpNotFound("Router not found")));
 
