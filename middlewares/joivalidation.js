@@ -43,7 +43,7 @@ module.exports.validateUserInfoBody = celebrate({
     }),
     email: Joi.string().email({
       minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
+      // tlds: { allow: ["com", "net"] },
     }),
     password: Joi.string().required().messages({
       "string.empty": "Password field cannot be empty",
@@ -56,7 +56,7 @@ module.exports.userLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email({
       minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
+      // tlds: { allow: ["com", "net"] },
     }),
     password: Joi.string().required().messages({
       "string.empty": "Password field cannot be empty",
