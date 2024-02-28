@@ -35,9 +35,9 @@ router.use("/items", clothingItem);
 // get
 router.get("/users/me", auth, getCurrentUser);
 // patch
-router.patch("/users/me", auth, updateUser);
+router.put("/users/me", auth, updateUser);
 
-router.use((req, res, next) => next(HttpNotFound("Router not found")));
+router.use((req, res, next) => next(new HttpNotFound("Router not found")));
 
 module.exports = router;
 
