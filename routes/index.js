@@ -32,7 +32,7 @@ router.post("/signup", validateUserInfoBody, createUser);
 // use
 router.use("/items", clothingItem);
 // get
-router.use("/users/me", auth, getCurrentUser);
+router.get("/users/me", auth, getCurrentUser);
 // patch
 router.patch("/users/me", auth, updateUser);
 
