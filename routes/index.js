@@ -25,6 +25,7 @@ router.get("/crash-test", () => {
     throw new Error("Server will crash now");
   }, 0);
 });
+
 // post
 router.post("/signin", userLogin, login);
 // post
