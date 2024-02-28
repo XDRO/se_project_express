@@ -25,14 +25,15 @@ router.get("/crash-test", () => {
     throw new Error("Server will crash now");
   }, 0);
 });
-
+// post
 router.post("/signin", userLogin, login);
-// I believe that below would need to be post
+// post
 router.post("/signup", validateUserInfoBody, createUser);
-// since this one has been organized inside of the other routes, it shouldn't be necessary to refactor
+// use
 router.use("/items", clothingItem);
-// using PATCH and GET requests through the route below split them into two
-router.get("/users/me", auth, getCurrentUser);
+// get
+router.use("/users/me", auth, getCurrentUser);
+// patch
 router.patch("/users/me", auth, updateUser);
 
 router.use((req, res, next) => next(HttpNotFound("Router not found")));
