@@ -63,18 +63,19 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.getCurrentUser = async (req, res, next) => {
   try {
-    const id = req.user._id;
+    const { _id } = req.user;
 
-    const userData = await user.findById(id).orFail();
+    const userData = await user.findById(_id).orFail();
 
     if (!userData) {
       return next(new HttpNotFound("User not found"));
     }
 
-    const { _id, name, avatar, email } = userData;
-    const userResponse = { _id, name, avatar, email };
+    // const { _id: id, name, avatar, email } = userData;
+    // const userResponse = { _id: id, name, avatar, email };
 
-    return res.json(userResponse);
+    // return res.json(userResponse);
+    return res.json(userData);
   } catch (e) {
     return next(e);
   }
