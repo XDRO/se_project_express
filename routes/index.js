@@ -11,6 +11,7 @@ const auth = require("../middlewares/auth");
 const {
   validateUserLogin,
   validateUserInfoBody,
+  validateUserUpdateBody,
 } = require("../middlewares/joivalidation");
 
 const {
@@ -35,7 +36,7 @@ router.use("/items", clothingItem);
 // get
 router.get("/users/me", auth, getCurrentUser);
 // patch
-router.put("/users/me", auth, updateUser);
+router.put("/users/me", auth, validateUserUpdateBody, updateUser);
 
 router.use((req, res, next) => next(new HttpNotFound("Router not found")));
 
