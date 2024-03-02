@@ -2,7 +2,8 @@ const { default: isEmail } = require("validator/lib/isEmail");
 
 const { default: isURL } = require("validator/lib/isURL");
 
-const { HttpBadRequest, HttpConflict } = require("../utils/error");
+const { HttpBadRequest } = require("../utils/errors/HttpBadRequest");
+const { HttpConflict } = require("../utils/errors/HttpConflict");
 
 const user = require("../models/user");
 

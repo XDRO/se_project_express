@@ -4,7 +4,7 @@ const router = require("express").Router();
 
 const clothingItem = require("./clothingItem");
 
-const { HttpNotFound } = require("../utils/error");
+const { HttpNotFound } = require("../utils/errors/HttpNotFound");
 
 const auth = require("../middlewares/auth");
 

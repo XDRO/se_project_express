@@ -1,6 +1,6 @@
 const { default: isURL } = require("validator/lib/isURL");
 
-const { HttpBadRequest } = require("../utils/error");
+const { HttpBadRequest } = require("../utils/errors/HttpBadRequest");
 
 module.exports = async (req, res, next) => {
   try {

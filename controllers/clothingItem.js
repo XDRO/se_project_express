@@ -1,11 +1,11 @@
 const { default: mongoose } = require("mongoose");
 
+const { HttpBadRequest } = require("../utils/errors/HttpBadRequest");
+const { HttpNotFound } = require("../utils/errors/HttpNotFound");
+const { HttpForbidden } = require("../utils/errors/HttpForbidden");
 const {
-  HttpBadRequest,
-  HttpNotFound,
-  HttpForbidden,
   HttpInternalServerError,
-} = require("../utils/error");
+} = require("../utils/errors/HttpInternalServerError");
 
 const clothingItems = require("../models/clothingItem");
 

@@ -3,14 +3,10 @@ const bcrypt = require("bcryptjs"); // use for sign up
 const jwt = require("jsonwebtoken");
 
 const user = require("../models/user");
-
-// will remove this when I create global error handling for all errors
-const {
-  HttpNotFound,
-  HttpUnauthorized,
-  HttpBadRequest,
-  HttpConflict,
-} = require("../utils/error");
+const { HttpBadRequest } = require("../utils/errors/HttpBadRequest");
+const { HttpNotFound } = require("../utils/errors/HttpNotFound");
+const { HttpConflict } = require("../utils/errors/HttpConflict");
+const { HttpUnauthorized } = require("../utils/errors/HttpUnauthorized");
 
 const { JWT_SECRET } = require("../utils/config");
 
