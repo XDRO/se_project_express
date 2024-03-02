@@ -9,6 +9,7 @@ const {
   HttpNotFound,
   HttpUnauthorized,
   HttpBadRequest,
+  HttpConflict,
 } = require("../utils/error");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -35,6 +36,12 @@ module.exports.createUser = async (req, res, next) => {
 
     return res.send(responseData);
   } catch (e) {
+    if (e.name === "ValidationError") {
+      return next(new HttpBadRequest("ValidationError"));
+    }
+    if (e.code === 11000) {
+      return next(new HttpConflict("Duplicate email error"));
+    }
     return next(e);
   }
 };
