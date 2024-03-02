@@ -33,6 +33,9 @@ module.exports.createItem = async (req, res, next) => {
 
     return res.send(responseData);
   } catch (e) {
+    if (e.name === "ValidationError") {
+      return next(new HttpBadRequest("ValidationError"));
+    }
     return next(e);
   }
 };
