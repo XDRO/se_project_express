@@ -9,7 +9,7 @@ const { HttpNotFound } = require("../utils/error");
 const auth = require("../middlewares/auth");
 
 const {
-  userLogin,
+  validateUserLogin,
   validateUserInfoBody,
 } = require("../middlewares/joivalidation");
 
@@ -27,7 +27,7 @@ router.get("/crash-test", () => {
 });
 
 // post
-router.post("/signin", userLogin, login);
+router.post("/signin", validateUserLogin, login);
 // post
 router.post("/signup", validateUserInfoBody, createUser);
 // use

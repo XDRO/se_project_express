@@ -52,7 +52,7 @@ module.exports.validateUserInfoBody = celebrate({
 });
 // .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
 
-module.exports.userLogin = celebrate({
+module.exports.validateUserLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email({
       minDomainSegments: 2,
